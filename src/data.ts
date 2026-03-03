@@ -10,6 +10,7 @@ export interface Topic {
   symbol?: string; // SVG path or similar identifier
   content: string;
   blueprintType: 'flatness' | 'straightness' | 'position' | 'circularity' | 'perpendicularity' | 'parallelism' | 'profile' | 'datum' | 'generic';
+  relatedTopics?: string[]; // IDs of related topics
 }
 
 export const topics: Topic[] = [
@@ -31,7 +32,8 @@ export const topics: Topic[] = [
       **Application:**
       Commonly used for sealing surfaces, mounting surfaces, or where two parts must slide against each other without binding.
     `,
-    blueprintType: 'flatness'
+    blueprintType: 'flatness',
+    relatedTopics: ['straightness', 'perpendicularity', 'surface-finish']
   },
   {
     id: 'straightness',
@@ -52,7 +54,8 @@ export const topics: Topic[] = [
       - Tolerance zone is a cylinder (when the diameter symbol is present).
       - Can be applied at MMC (Maximum Material Condition).
     `,
-    blueprintType: 'straightness'
+    blueprintType: 'straightness',
+    relatedTopics: ['flatness', 'position', 'machining-tolerances']
   },
   {
     id: 'position',
@@ -72,7 +75,8 @@ export const topics: Topic[] = [
       **Tolerance Zone:**
       Typically a cylinder (for holes) or a width (for slots) centered at the true position.
     `,
-    blueprintType: 'position'
+    blueprintType: 'position',
+    relatedTopics: ['perpendicularity', 'iso-14405-modifiers', 'machining-tolerances']
   },
   {
     id: 'perpendicularity',
@@ -90,7 +94,8 @@ export const topics: Topic[] = [
       **Axis Perpendicularity:**
       - Tolerance zone is a cylinder perpendicular to the datum plane.
     `,
-    blueprintType: 'perpendicularity'
+    blueprintType: 'perpendicularity',
+    relatedTopics: ['flatness', 'position']
   },
   {
     id: 'dfma-intro',
@@ -111,7 +116,8 @@ export const topics: Topic[] = [
       3. Design for efficient joining (snap fits vs. screws).
       4. Minimize reorientation during assembly.
     `,
-    blueprintType: 'generic'
+    blueprintType: 'generic',
+    relatedTopics: ['injection-molding-dfm', 'sheet-metal-dfm', 'machining-tolerances']
   },
   {
     id: 'machining-tolerances',
@@ -131,7 +137,8 @@ export const topics: Topic[] = [
       **Rule of Thumb:**
       Tighter tolerances cost exponentially more. Only specify tight tolerances where functionally necessary (e.g., bearing fits).
     `,
-    blueprintType: 'generic'
+    blueprintType: 'generic',
+    relatedTopics: ['surface-finish', 'iso-14405-modifiers', 'dfma-intro']
   },
   {
     id: 'injection-molding-dfm',
@@ -154,7 +161,8 @@ export const topics: Topic[] = [
       - Used for stiffness.
       - Thickness should be 50-60% of the main wall thickness to avoid sink marks.
     `,
-    blueprintType: 'generic'
+    blueprintType: 'generic',
+    relatedTopics: ['dfma-intro', 'surface-finish']
   },
   {
     id: 'sheet-metal-dfm',
@@ -173,7 +181,8 @@ export const topics: Topic[] = [
       **Relief Cuts:**
       - Corner reliefs are necessary to prevent tearing when bending flanges.
     `,
-    blueprintType: 'generic'
+    blueprintType: 'generic',
+    relatedTopics: ['dfma-intro', 'machining-tolerances']
   },
   {
     id: 'surface-finish',
@@ -197,7 +206,8 @@ export const topics: Topic[] = [
       **Symbol Structure:**
       The checkmark symbol indicates the surface requirement. Numbers above indicate the maximum roughness.
     `,
-    blueprintType: 'generic'
+    blueprintType: 'generic',
+    relatedTopics: ['machining-tolerances', 'flatness']
   },
   {
     id: 'iso-14405-modifiers',
@@ -237,6 +247,7 @@ export const topics: Topic[] = [
       
       Specifying these modifiers ensures the inspection method matches the functional requirement.
     `,
-    blueprintType: 'generic'
+    blueprintType: 'generic',
+    relatedTopics: ['position', 'machining-tolerances']
   }
 ];

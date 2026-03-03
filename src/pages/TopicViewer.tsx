@@ -80,6 +80,40 @@ export const TopicViewer: React.FC = () => {
               Always verify tolerances with the specific manufacturing process capability (Cpk) before finalizing the print.
             </p>
           </div>
+
+          {/* Related Topics */}
+          {topic.relatedTopics && topic.relatedTopics.length > 0 && (
+            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+              <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <ArrowLeft className="w-4 h-4 rotate-180" />
+                Related Topics
+              </h3>
+              <div className="space-y-3">
+                {topic.relatedTopics.map(relatedId => {
+                  const relatedTopic = topics.find(t => t.id === relatedId);
+                  if (!relatedTopic) return null;
+                  return (
+                    <Link 
+                      key={relatedId} 
+                      to={`/topic/${relatedId}`}
+                      className="block p-3 rounded-lg bg-slate-50 hover:bg-blueprint-50 border border-slate-100 hover:border-blueprint-200 transition-colors group"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-slate-700 group-hover:text-blueprint-700">
+                          {relatedTopic.title}
+                        </span>
+                        {relatedTopic.symbol && (
+                          <span className="text-slate-400 group-hover:text-blueprint-400 font-sans">
+                            {relatedTopic.symbol}
+                          </span>
+                        )}
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
