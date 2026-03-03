@@ -9,7 +9,7 @@ export interface Topic {
   standardRef: string; // e.g., "ASME Y14.5-2018 Section 5.4.1"
   symbol?: string; // SVG path or similar identifier
   content: string;
-  blueprintType: 'flatness' | 'straightness' | 'position' | 'circularity' | 'cylindricity' | 'perpendicularity' | 'parallelism' | 'angularity' | 'profile' | 'profile-line' | 'runout' | 'concentricity' | 'symmetry' | 'datum' | 'fits' | 'welding' | 'thread' | 'metrology' | 'surface-finish' | 'modifiers' | 'injection-molding' | 'sheet-metal' | 'cnc-machining' | 'stackup' | 'generic';
+  blueprintType: 'flatness' | 'straightness' | 'position' | 'circularity' | 'cylindricity' | 'perpendicularity' | 'parallelism' | 'angularity' | 'profile' | 'profile-line' | 'runout' | 'concentricity' | 'symmetry' | 'datum' | 'datum-system' | 'fits' | 'welding' | 'thread' | 'metrology' | 'surface-finish' | 'modifiers' | 'material-modifiers' | 'rule-1' | 'independency' | 'injection-molding' | 'sheet-metal' | 'cnc-machining' | 'stackup' | 'generic';
   relatedTopics?: string[]; // IDs of related topics
 }
 
@@ -372,7 +372,7 @@ export const topics: Topic[] = [
       - Parts subject to free-state variation (flexible parts).
       - When the "Independency" symbol is applied.
     `,
-    blueprintType: 'generic',
+    blueprintType: 'rule-1',
     relatedTopics: ['independency', 'straightness', 'flatness']
   },
   {
@@ -392,7 +392,7 @@ export const topics: Topic[] = [
       **Design Intent:**
       Use when the function of the feature (e.g., strength) depends on size, but the assembly (e.g., fit) is controlled by a separate geometric tolerance, or when form is not critical.
     `,
-    blueprintType: 'modifiers',
+    blueprintType: 'independency',
     relatedTopics: ['rule-1', 'iso-14405-modifiers']
   },
   {
@@ -414,7 +414,7 @@ export const topics: Topic[] = [
       - **Datum Feature:** The actual physical surface on the part (imperfect).
       - **Simulated Datum:** The theoretical perfect plane/axis derived from the inspection equipment (e.g., surface plate, collet) contacting the datum feature.
     `,
-    blueprintType: 'datum',
+    blueprintType: 'datum-system',
     relatedTopics: ['position', 'profile-surface', 'metrology-cmm']
   },
   // --- Additional Symbols ---
@@ -545,7 +545,7 @@ export const topics: Topic[] = [
       - The condition where the feature contains the least amount of material (largest hole, smallest pin).
       - **Design Intent:** Used for wall thickness preservation or edge distance.
     `,
-    blueprintType: 'modifiers',
+    blueprintType: 'material-modifiers',
     relatedTopics: ['position', 'fits-and-limits']
   },
   // --- DFMA & Stackups ---

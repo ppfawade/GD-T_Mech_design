@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { clsx } from 'clsx';
 
 interface BlueprintCanvasProps {
-  type: 'flatness' | 'straightness' | 'position' | 'circularity' | 'cylindricity' | 'perpendicularity' | 'parallelism' | 'angularity' | 'profile' | 'profile-line' | 'runout' | 'concentricity' | 'symmetry' | 'datum' | 'fits' | 'welding' | 'thread' | 'metrology' | 'surface-finish' | 'modifiers' | 'injection-molding' | 'sheet-metal' | 'cnc-machining' | 'stackup' | 'generic';
+  type: 'flatness' | 'straightness' | 'position' | 'circularity' | 'cylindricity' | 'perpendicularity' | 'parallelism' | 'angularity' | 'profile' | 'profile-line' | 'runout' | 'concentricity' | 'symmetry' | 'datum' | 'datum-system' | 'fits' | 'welding' | 'thread' | 'metrology' | 'surface-finish' | 'modifiers' | 'material-modifiers' | 'rule-1' | 'independency' | 'injection-molding' | 'sheet-metal' | 'cnc-machining' | 'stackup' | 'generic';
   className?: string;
 }
 
@@ -542,6 +542,125 @@ function renderDiagram(type: string) {
              <text x="45" y="22" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">0.2</text>
              <text x="70" y="22" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">A</text>
              <path d="M 40 30 L 100 150" className="stroke-white marker-end" />
+          </g>
+        </g>
+      );
+
+    case 'rule-1':
+      return (
+        <g>
+          {/* MMC Boundary (Perfect Cylinder) */}
+          <rect x="50" y="100" width="300" height="100" className="stroke-blueprint-500 stroke-dashed fill-none" strokeDasharray="4 4" />
+          <text x="200" y="90" textAnchor="middle" className="fill-blueprint-300 font-mono text-xs stroke-none">MMC BOUNDARY (PERFECT FORM)</text>
+          
+          {/* Actual Part (Bent but fits) */}
+          <path d="M 50 110 Q 200 140 350 110 L 350 190 Q 200 220 50 190 Z" className="stroke-white fill-blueprint-900 opacity-80" />
+          <text x="200" y="150" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">ACTUAL PART</text>
+          
+          {/* Dimension */}
+          <line x1="50" y1="210" x2="50" y2="230" className="stroke-white" />
+          <line x1="350" y1="210" x2="350" y2="230" className="stroke-white" />
+          <line x1="50" y1="220" x2="350" y2="220" className="stroke-white" />
+          <text x="200" y="240" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">Ø10 ±0.1</text>
+          
+          {/* Note */}
+          <text x="200" y="260" textAnchor="middle" className="fill-green-400 font-mono text-xs stroke-none">MUST NOT VIOLATE MMC BOUNDARY</text>
+        </g>
+      );
+
+    case 'independency':
+      return (
+        <g>
+          {/* MMC Boundary */}
+          <rect x="50" y="100" width="300" height="100" className="stroke-blueprint-500 stroke-dashed fill-none opacity-50" strokeDasharray="4 4" />
+          
+          {/* Actual Part (Bent and violates boundary) */}
+          <path d="M 50 80 Q 200 180 350 80 L 350 180 Q 200 280 50 180 Z" className="stroke-white fill-blueprint-900" />
+          
+          {/* Dimension with Independency Symbol */}
+          <line x1="50" y1="250" x2="350" y2="250" className="stroke-white" />
+          <text x="200" y="270" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">Ø10 ±0.1 Ⓘ</text>
+          
+          {/* Labels */}
+          <text x="200" y="130" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">SIZE IS OK</text>
+          <text x="200" y="50" textAnchor="middle" className="fill-yellow-400 font-mono text-xs stroke-none">FORM CAN EXCEED SIZE TOLERANCE</text>
+          
+          {/* Circle I symbol detail */}
+          <circle cx="245" cy="265" r="8" className="stroke-white fill-none" />
+          <text x="245" y="269" textAnchor="middle" className="fill-white font-sans text-xs stroke-none font-bold">I</text>
+        </g>
+      );
+
+    case 'datum-system':
+      return (
+        <g>
+          {/* 3D Block Representation */}
+          <path d="M 100 200 L 250 200 L 350 150 L 200 150 Z" className="stroke-white fill-blueprint-800" /> {/* Top */}
+          <path d="M 100 200 L 100 100 L 250 100 L 250 200 Z" className="stroke-white fill-blueprint-900" /> {/* Front */}
+          <path d="M 250 200 L 350 150 L 350 50 L 250 100 Z" className="stroke-white fill-blueprint-800" /> {/* Side */}
+          
+          {/* Primary Datum A (Bottom - 3 Points) */}
+          <circle cx="130" cy="180" r="4" className="fill-red-500 stroke-white" />
+          <circle cx="220" cy="180" r="4" className="fill-red-500 stroke-white" />
+          <circle cx="175" cy="130" r="4" className="fill-red-500 stroke-white" />
+          <text x="175" y="220" className="fill-red-500 font-mono text-xs stroke-none font-bold">A (3 PTS)</text>
+          
+          {/* Secondary Datum B (Back - 2 Points) */}
+          <circle cx="150" cy="150" r="4" className="fill-green-500 stroke-white" />
+          <circle cx="300" cy="150" r="4" className="fill-green-500 stroke-white" />
+          <text x="300" y="130" className="fill-green-500 font-mono text-xs stroke-none font-bold">B (2 PTS)</text>
+          
+          {/* Tertiary Datum C (Side - 1 Point) */}
+          <circle cx="300" cy="100" r="4" className="fill-blue-500 stroke-white" />
+          <text x="360" y="100" className="fill-blue-500 font-mono text-xs stroke-none font-bold">C (1 PT)</text>
+          
+          {/* Axes */}
+          <line x1="50" y1="250" x2="90" y2="250" className="stroke-blueprint-300 marker-end" />
+          <text x="95" y="255" className="fill-blueprint-300 font-mono text-xs stroke-none">X</text>
+          <line x1="50" y1="250" x2="50" y2="210" className="stroke-blueprint-300 marker-end" />
+          <text x="45" y="205" className="fill-blueprint-300 font-mono text-xs stroke-none">Z</text>
+          <line x1="50" y1="250" x2="80" y2="230" className="stroke-blueprint-300 marker-end" />
+          <text x="85" y="230" className="fill-blueprint-300 font-mono text-xs stroke-none">Y</text>
+        </g>
+      );
+
+    case 'material-modifiers':
+      return (
+        <g>
+          {/* Table Header */}
+          <rect x="50" y="50" width="300" height="30" className="stroke-white fill-blueprint-800" />
+          <text x="200" y="70" textAnchor="middle" className="fill-white font-mono text-sm stroke-none font-bold">BONUS TOLERANCE CALCULATION</text>
+          
+          {/* Table Rows */}
+          <rect x="50" y="80" width="300" height="120" className="stroke-white fill-none" />
+          <line x1="50" y1="120" x2="350" y2="120" className="stroke-white" />
+          <line x1="50" y1="160" x2="350" y2="160" className="stroke-white" />
+          <line x1="150" y1="80" x2="150" y2="200" className="stroke-white" />
+          <line x1="250" y1="80" x2="250" y2="200" className="stroke-white" />
+          
+          {/* Headers */}
+          <text x="100" y="100" textAnchor="middle" className="fill-blueprint-300 font-mono text-xs stroke-none">HOLE SIZE</text>
+          <text x="200" y="100" textAnchor="middle" className="fill-blueprint-300 font-mono text-xs stroke-none">BONUS</text>
+          <text x="300" y="100" textAnchor="middle" className="fill-blueprint-300 font-mono text-xs stroke-none">TOTAL TOL</text>
+          
+          {/* Row 1 (MMC) */}
+          <text x="100" y="140" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">Ø9.9 (MMC)</text>
+          <text x="200" y="140" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">0</text>
+          <text x="300" y="140" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">0.1</text>
+          
+          {/* Row 2 (Nominal) */}
+          <text x="100" y="180" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">Ø10.0</text>
+          <text x="200" y="180" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">0.1</text>
+          <text x="300" y="180" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">0.2</text>
+          
+          {/* FCF Example */}
+          <g transform="translate(130, 230)">
+             <rect x="0" y="0" width="140" height="30" className="stroke-white fill-blueprint-900" />
+             <line x1="30" y1="0" x2="30" y2="30" className="stroke-white" />
+             <line x1="100" y1="0" x2="100" y2="30" className="stroke-white" />
+             <text x="15" y="22" textAnchor="middle" className="fill-white font-sans text-lg stroke-none">⌖</text>
+             <text x="65" y="22" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">Ø0.1 Ⓜ</text>
+             <text x="120" y="22" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">A</text>
           </g>
         </g>
       );

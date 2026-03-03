@@ -53,19 +53,32 @@ This platform categorizes knowledge into distinct pillars:
 
 ### 2. Theoretical Framework
 
-#### 2.1 Geometric Dimensioning and Tolerancing (GD&T)
+#### 2.1 Fundamentals of GD&T
 
-GD&T is a symbolic language used on engineering drawings and computer-generated three-dimensional solid models for explicitly describing nominal geometry and its allowable variation.
+Before applying symbols, one must understand the foundational rules that govern the interpretation of drawings.
 
-**Key Concepts Covered:**
+*   **Rule #1 (Envelope Principle):** The default rule in ASME Y14.5. It states that the size tolerance of a feature controls its form. A feature at Maximum Material Condition (MMC) must have perfect form.
+*   **Independency Principle:** The default in ISO 8015. It states that size and form are independent requirements. The Envelope requirement must be explicitly invoked (symbol Ⓔ).
+*   **Datum Reference Frame (DRF):** The coordinate system (X, Y, Z) established by the physical part.
+    *   **3-2-1 Rule:** The method of constraining all 6 degrees of freedom using 3 points for the primary datum, 2 for the secondary, and 1 for the tertiary.
+*   **Material Modifiers:**
+    *   **MMC (Maximum Material Condition) Ⓜ:** Allows for "bonus tolerance" as the feature size departs from its worst-case condition. Crucial for assembly.
+    *   **LMC (Least Material Condition) Ⓛ:** Used to preserve wall thickness.
+    *   **RFS (Regardless of Feature Size):** The default condition where no bonus tolerance is allowed.
 
-*   **Form Controls:** *Flatness* ($\tiny \square$), *Straightness* ($\tiny -$), *Circularity* ($\tiny \bigcirc$), *Cylindricity* ($\tiny \emptyset$). These control the shape of features independent of their size or location.
-*   **Orientation Controls:** *Perpendicularity* ($\tiny \perp$), *Parallelism* ($\tiny //$), *Angularity* ($\tiny \angle$). These require a datum reference frame (DRF).
-*   **Location Controls:** *Position* ($\tiny \oplus$). The most powerful symbol, controlling location, orientation, and spacing simultaneously.
+#### 2.2 The 14 Geometric Symbols
+
+GD&T uses a set of 14 symbols to define the geometry of a part.
+
+*   **Form Controls:** *Flatness* ($\tiny \square$), *Straightness* ($\tiny -$), *Circularity* ($\tiny \bigcirc$), *Cylindricity* ($\tiny \emptyset$). Control shape without datums.
+*   **Orientation Controls:** *Perpendicularity* ($\tiny \perp$), *Parallelism* ($\tiny //$), *Angularity* ($\tiny \angle$). Control tilt relative to a datum.
+*   **Location Controls:** *Position* ($\tiny \oplus$), *Concentricity* ($\tiny \odot$), *Symmetry* ($\tiny \equiv$). Control location relative to datums. Note: Concentricity and Symmetry were removed in ASME Y14.5-2018.
+*   **Profile Controls:** *Profile of a Surface* ($\tiny \triangle$), *Profile of a Line* ($\tiny \cap$). Control the outline of a feature.
+*   **Runout Controls:** *Circular Runout* ($\tiny \nearrow$), *Total Runout* ($\tiny \doublearrow$). Control coaxiality and form relative to a datum axis.
 
 > **Reference Image:** [ASME Y14.5 Tolerance Zones](https://www.asme.org/wwwasmeorg/media/resourcefiles/aboutasme/who%20we%20are/standards/y14-5-2018-figure-1.jpg)
 
-#### 2.2 Fits and Limits (ISO 286)
+#### 2.3 Fits and Limits (ISO 286)
 
 The ISO system of limits and fits provides a standardized way to define the relationship between mating parts (holes and shafts).
 
@@ -73,20 +86,34 @@ The ISO system of limits and fits provides a standardized way to define the rela
 *   **Transition Fits:** Can be gap or interference (e.g., H7/k6).
 *   **Interference Fits:** Always tight (e.g., H7/p6).
 
-#### 2.3 Metrology
+#### 2.4 Metrology
 
 Verification is as important as specification. The application covers:
 *   **CMM (Coordinate Measuring Machines):** Sampling strategies and alignment.
 *   **Hard Gaging:** Functional checks (Go/No-Go).
 
-#### 2.4 Design for Manufacture and Assembly (DFMA)
+#### 2.5 Design for Manufacture and Assembly (DFMA)
 
 DFMA is the integration of product design and process planning into one common activity.
 
 *   **DFM (Design for Manufacture):** Concerned with selecting cost-effective raw materials and processes.
     *   *Example:* In injection molding, maintaining uniform wall thickness (1.5mm - 3.0mm) to prevent sink marks.
+    *   *Example:* In CNC machining, avoiding sharp internal corners and deep holes (>5x diameter).
 *   **DFA (Design for Assembly):** Concerned with the product structure.
     *   *Example:* Reducing part count by using snap-fits instead of screws.
+
+#### 2.6 Manufacturing Processes
+
+Understanding the capabilities and standard representations of manufacturing processes is vital.
+*   **Threads:** ISO Metric (M) and Unified (UNC/UNF) designations.
+*   **Welding:** Standard AWS/ISO symbols for fillet, groove, and spot welds.
+*   **Surface Finish:** Ra values and their correlation to manufacturing processes (e.g., Ra 3.2 for milling).
+
+#### 2.7 Tolerance Analysis (Stackups)
+
+The study of accumulated variation in an assembly.
+*   **Worst Case:** Assumes all parts are at their limit. Guarantees 100% assembly but requires tighter tolerances.
+*   **RSS (Root Sum Squares):** Statistical approach assuming normal distribution. Allows looser tolerances with minimal risk.
 
 ---
 
