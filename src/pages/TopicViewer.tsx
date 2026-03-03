@@ -3,7 +3,7 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { topics } from '../data';
 import { BlueprintCanvas } from '../components/BlueprintCanvas';
-import { ArrowLeft, Book, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Book, ExternalLink, Calculator } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Helmet } from 'react-helmet-async';
@@ -137,6 +137,30 @@ export const TopicViewer: React.FC = () => {
                   );
                 })}
               </div>
+            </div>
+          )}
+
+          {/* External Resource Widget */}
+          {topic.externalResource && (
+            <div className="bg-gradient-to-br from-blueprint-600 to-blueprint-800 p-6 rounded-xl shadow-lg text-white mt-6">
+              <div className="mb-4">
+                <h3 className="font-bold text-lg flex items-center gap-2 mb-2">
+                  <Calculator className="w-5 h-5" />
+                  {topic.externalResource.title}
+                </h3>
+                <p className="text-blueprint-100 text-sm leading-relaxed">
+                  {topic.externalResource.description}
+                </p>
+              </div>
+              <a 
+                href={topic.externalResource.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center w-full px-4 py-3 bg-white text-blueprint-700 font-semibold rounded-lg hover:bg-blueprint-50 transition-colors shadow-sm"
+              >
+                {topic.externalResource.cta}
+                <ExternalLink className="w-4 h-4 ml-2" />
+              </a>
             </div>
           )}
         </div>

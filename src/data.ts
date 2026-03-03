@@ -12,6 +12,12 @@ export interface Topic {
   content: string;
   blueprintType: 'flatness' | 'straightness' | 'position' | 'circularity' | 'cylindricity' | 'perpendicularity' | 'parallelism' | 'angularity' | 'profile' | 'profile-line' | 'runout' | 'concentricity' | 'symmetry' | 'datum' | 'datum-system' | 'fits' | 'welding' | 'thread' | 'metrology' | 'surface-finish' | 'modifiers' | 'material-modifiers' | 'rule-1' | 'independency' | 'iso-14405' | 'injection-molding' | 'sheet-metal' | 'cnc-machining' | 'stackup' | 'generic' | 'iso-22081';
   relatedTopics?: string[]; // IDs of related topics
+  externalResource?: {
+    title: string;
+    description: string;
+    url: string;
+    cta: string;
+  };
 }
 
 export const topics: Topic[] = [
@@ -763,7 +769,13 @@ export const topics: Topic[] = [
       4. Calculate.
     `,
     blueprintType: 'stackup',
-    relatedTopics: ['fits-and-limits', 'position']
+    relatedTopics: ['fits-and-limits', 'position'],
+    externalResource: {
+      title: 'Tolerance Stackup Pro',
+      description: 'Perform 1D tolerance stackup calculations (Worst Case & RSS) directly in your browser.',
+      url: 'https://tol-stack-pro2.vercel.app/',
+      cta: 'Try Calculator'
+    }
   },
   {
     id: 'concentricity',
