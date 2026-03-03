@@ -31,8 +31,17 @@ export const Sidebar: React.FC = () => {
         <NavItem to="/category/Standards" icon={<Info size={18} />} label="Standards Ref" />
       </nav>
 
-      <div className="p-4 border-t border-slate-800 text-xs text-slate-500">
-        v1.1.0 • ASME Y14.5-2018
+      <div className="p-4 border-t border-slate-800 text-xs text-slate-500 space-y-3">
+        <div>v1.1.0 • ASME Y14.5-2018</div>
+        
+        <div className="pt-3 border-t border-slate-800/50">
+          <h4 className="font-semibold text-slate-400 mb-1">About</h4>
+          <p className="mb-1">Author: Prashant Fawade</p>
+          <p className="mb-2">&copy; 2026 All rights reserved.</p>
+          <p className="text-[10px] leading-relaxed opacity-70">
+            Built with Google AI Studio. Information may contain errors; please verify with official standards.
+          </p>
+        </div>
       </div>
     </div>
   );

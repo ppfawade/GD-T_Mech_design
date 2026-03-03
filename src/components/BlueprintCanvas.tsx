@@ -778,6 +778,49 @@ function renderDiagram(type: string) {
         </g>
       );
 
+    case 'surface-finish':
+      return (
+        <g>
+          {/* Surface Line */}
+          <line x1="50" y1="200" x2="350" y2="200" className="stroke-white stroke-2" />
+          
+          {/* Roughness Profile (Magnified) */}
+          <path d="M 50 200 L 55 195 L 60 205 L 65 198 L 70 202 L 75 195 L 80 205 L 85 200" className="stroke-blueprint-500 stroke-[0.5] fill-none" />
+          <text x="70" y="185" textAnchor="middle" className="fill-blueprint-300 font-mono text-[10px] stroke-none">PROFILE</text>
+
+          {/* Symbol 1: Ra 6.3 (Rough Milling) */}
+          <g transform="translate(120, 200)">
+             <path d="M 0 0 L 10 -20 L 20 0" className="stroke-white fill-none" />
+             <line x1="10" y1="-20" x2="20" y2="-40" className="stroke-white" />
+             <line x1="20" y1="-40" x2="45" y2="-40" className="stroke-white" />
+             <text x="32" y="-45" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">6.3</text>
+             <text x="10" y="20" textAnchor="middle" className="fill-blueprint-300 font-mono text-xs stroke-none">ROUGH</text>
+          </g>
+
+          {/* Symbol 2: Ra 3.2 (Finish Milling) */}
+          <g transform="translate(200, 200)">
+             <path d="M 0 0 L 10 -20 L 20 0" className="stroke-white fill-none" />
+             <line x1="10" y1="-20" x2="20" y2="-40" className="stroke-white" />
+             <line x1="20" y1="-40" x2="45" y2="-40" className="stroke-white" />
+             <text x="32" y="-45" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">3.2</text>
+             <text x="10" y="20" textAnchor="middle" className="fill-blueprint-300 font-mono text-xs stroke-none">MACHINED</text>
+          </g>
+
+          {/* Symbol 3: Ra 0.8 (Grinding) */}
+          <g transform="translate(280, 200)">
+             <path d="M 0 0 L 10 -20 L 20 0" className="stroke-white fill-none" />
+             <line x1="10" y1="-20" x2="20" y2="-40" className="stroke-white" />
+             <line x1="20" y1="-40" x2="45" y2="-40" className="stroke-white" />
+             <text x="32" y="-45" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">0.8</text>
+             <text x="10" y="20" textAnchor="middle" className="fill-blueprint-300 font-mono text-xs stroke-none">GROUND</text>
+          </g>
+
+          {/* Title */}
+          <text x="200" y="80" textAnchor="middle" className="fill-white font-mono text-sm stroke-none font-bold">SURFACE TEXTURE SYMBOLS (Ra)</text>
+          <text x="200" y="100" textAnchor="middle" className="fill-blueprint-300 font-mono text-xs stroke-none">VALUES IN MICROMETERS (µm)</text>
+        </g>
+      );
+
     default:
       return (
         <g className="opacity-50">

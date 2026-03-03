@@ -1,6 +1,10 @@
 # Geometric Dimensioning and Tolerancing (GD&T) Knowledge Base
 ## A Digital Compendium for Mechanical Design and Manufacturing
 
+> **Disclaimer:** This application was generated using Google AI Studio. The content provided is for educational purposes and may contain errors. Please verify all information against official standards (ASME Y14.5, ISO GPS) before applying it to critical engineering designs.
+
+**Live Application:** [https://gdt-mech-design.vercel.app/](https://gdt-mech-design.vercel.app/)
+
 ---
 
 ### Abstract
