@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import { LayoutGrid, BookOpen, Settings, Info, PenTool, Database, GraduationCap, Layers } from 'lucide-react';
 import { clsx } from 'clsx';
 
@@ -22,7 +22,18 @@ export const Sidebar: React.FC = () => {
           Categories
         </div>
         <NavItem to="/category/Fundamentals" icon={<GraduationCap size={18} />} label="Fundamentals" />
-        <NavItem to="/category/GD&T" icon={<PenTool size={18} />} label="GD&T Symbols" />
+        
+        <div className="space-y-1">
+          <NavItem to="/category/GD&T" icon={<PenTool size={18} />} label="GD&T Symbols" />
+          <div className="space-y-0.5">
+            <SubNavItem to="/category/GD&T?subcategory=Form" label="Form" />
+            <SubNavItem to="/category/GD&T?subcategory=Orientation" label="Orientation" />
+            <SubNavItem to="/category/GD&T?subcategory=Location" label="Location" />
+            <SubNavItem to="/category/GD&T?subcategory=Profile" label="Profile" />
+            <SubNavItem to="/category/GD&T?subcategory=Runout" label="Runout" />
+          </div>
+        </div>
+
         <NavItem to="/category/Fits & Limits" icon={<Settings size={18} />} label="Fits & Limits" />
         <NavItem to="/category/Stackups" icon={<Layers size={18} />} label="Tolerance Stackups" />
         <NavItem to="/category/Metrology" icon={<LayoutGrid size={18} />} label="Metrology" />
@@ -50,6 +61,7 @@ export const Sidebar: React.FC = () => {
 const NavItem: React.FC<{ to: string; icon: React.ReactNode; label: string }> = ({ to, icon, label }) => (
   <NavLink
     to={to}
+    end={to === '/'}
     className={({ isActive }) =>
       clsx(
         "flex items-center gap-3 px-3 py-2 rounded-md transition-colors text-sm font-medium",
@@ -63,3 +75,23 @@ const NavItem: React.FC<{ to: string; icon: React.ReactNode; label: string }> = 
     {label}
   </NavLink>
 );
+
+const SubNavItem: React.FC<{ to: string; label: string }> = ({ to, label }) => {
+  const location = useLocation();
+  const isActive = location.pathname + location.search === to;
+  
+  return (
+    <Link
+      to={to}
+      className={clsx(
+        "flex items-center gap-3 px-3 py-1.5 pl-11 rounded-md transition-colors text-sm",
+        isActive
+          ? "text-blueprint-400 font-medium bg-slate-800/50"
+          : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/30"
+      )}
+    >
+      <span className={clsx("w-1.5 h-1.5 rounded-full", isActive ? "bg-blueprint-400" : "bg-slate-600")} />
+      {label}
+    </Link>
+  );
+};

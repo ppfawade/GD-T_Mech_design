@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { clsx } from 'clsx';
 
 interface BlueprintCanvasProps {
-  type: 'flatness' | 'straightness' | 'position' | 'circularity' | 'cylindricity' | 'perpendicularity' | 'parallelism' | 'angularity' | 'profile' | 'profile-line' | 'runout' | 'concentricity' | 'symmetry' | 'datum' | 'datum-system' | 'fits' | 'welding' | 'thread' | 'metrology' | 'surface-finish' | 'modifiers' | 'material-modifiers' | 'rule-1' | 'independency' | 'iso-14405' | 'injection-molding' | 'sheet-metal' | 'cnc-machining' | 'stackup' | 'generic';
+  type: 'flatness' | 'straightness' | 'position' | 'circularity' | 'cylindricity' | 'perpendicularity' | 'parallelism' | 'angularity' | 'profile' | 'profile-line' | 'runout' | 'concentricity' | 'symmetry' | 'datum' | 'datum-system' | 'fits' | 'welding' | 'thread' | 'metrology' | 'surface-finish' | 'modifiers' | 'material-modifiers' | 'rule-1' | 'independency' | 'iso-14405' | 'injection-molding' | 'sheet-metal' | 'cnc-machining' | 'stackup' | 'generic' | 'iso-22081';
   className?: string;
 }
 
@@ -788,36 +788,106 @@ function renderDiagram(type: string) {
           <path d="M 50 200 L 55 195 L 60 205 L 65 198 L 70 202 L 75 195 L 80 205 L 85 200" className="stroke-blueprint-500 stroke-[0.5] fill-none" />
           <text x="70" y="185" textAnchor="middle" className="fill-blueprint-300 font-mono text-[10px] stroke-none">PROFILE</text>
 
-          {/* Symbol 1: Ra 6.3 (Rough Milling) */}
+          {/* Symbol 1: Ra 6.3 / Rz 25 */}
           <g transform="translate(120, 200)">
              <path d="M 0 0 L 10 -20 L 20 0" className="stroke-white fill-none" />
              <line x1="10" y1="-20" x2="20" y2="-40" className="stroke-white" />
              <line x1="20" y1="-40" x2="45" y2="-40" className="stroke-white" />
              <text x="32" y="-45" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">6.3</text>
-             <text x="10" y="20" textAnchor="middle" className="fill-blueprint-300 font-mono text-xs stroke-none">ROUGH</text>
+             <text x="10" y="20" textAnchor="middle" className="fill-blueprint-300 font-mono text-xs stroke-none">Rz 25</text>
           </g>
 
-          {/* Symbol 2: Ra 3.2 (Finish Milling) */}
+          {/* Symbol 2: Ra 3.2 / Rz 12.5 */}
           <g transform="translate(200, 200)">
              <path d="M 0 0 L 10 -20 L 20 0" className="stroke-white fill-none" />
              <line x1="10" y1="-20" x2="20" y2="-40" className="stroke-white" />
              <line x1="20" y1="-40" x2="45" y2="-40" className="stroke-white" />
              <text x="32" y="-45" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">3.2</text>
-             <text x="10" y="20" textAnchor="middle" className="fill-blueprint-300 font-mono text-xs stroke-none">MACHINED</text>
+             <text x="10" y="20" textAnchor="middle" className="fill-blueprint-300 font-mono text-xs stroke-none">Rz 12.5</text>
           </g>
 
-          {/* Symbol 3: Ra 0.8 (Grinding) */}
+          {/* Symbol 3: Ra 0.8 / Rz 3.2 */}
           <g transform="translate(280, 200)">
              <path d="M 0 0 L 10 -20 L 20 0" className="stroke-white fill-none" />
              <line x1="10" y1="-20" x2="20" y2="-40" className="stroke-white" />
              <line x1="20" y1="-40" x2="45" y2="-40" className="stroke-white" />
              <text x="32" y="-45" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">0.8</text>
-             <text x="10" y="20" textAnchor="middle" className="fill-blueprint-300 font-mono text-xs stroke-none">GROUND</text>
+             <text x="10" y="20" textAnchor="middle" className="fill-blueprint-300 font-mono text-xs stroke-none">Rz 3.2</text>
           </g>
 
           {/* Title */}
-          <text x="200" y="80" textAnchor="middle" className="fill-white font-mono text-sm stroke-none font-bold">SURFACE TEXTURE SYMBOLS (Ra)</text>
-          <text x="200" y="100" textAnchor="middle" className="fill-blueprint-300 font-mono text-xs stroke-none">VALUES IN MICROMETERS (µm)</text>
+          <text x="200" y="60" textAnchor="middle" className="fill-white font-mono text-sm stroke-none font-bold">SURFACE TEXTURE (Ra vs Rz)</text>
+          <text x="200" y="80" textAnchor="middle" className="fill-blueprint-300 font-mono text-xs stroke-none">VALUES IN MICROMETERS (µm)</text>
+          
+          {/* Relationship Note */}
+          <rect x="100" y="100" width="200" height="40" className="stroke-blueprint-500 fill-blueprint-900/50 stroke-dashed" rx="4" />
+          <text x="200" y="125" textAnchor="middle" className="fill-yellow-400 font-mono text-xs stroke-none">Rule of Thumb: Rz ≈ 4 x Ra</text>
+        </g>
+      );
+
+    case 'iso-22081':
+      return (
+        <g>
+          {/* General Note Box */}
+          <g transform="translate(50, 30)">
+            <rect x="0" y="0" width="300" height="60" className="stroke-white fill-none" />
+            <text x="10" y="20" className="fill-white font-mono text-xs stroke-none">GENERAL TOLERANCE (ISO 22081):</text>
+            
+            {/* Feature Control Frame */}
+            <g transform="translate(10, 30)">
+              <rect x="0" y="0" width="200" height="20" className="stroke-white fill-none" />
+              <line x1="30" y1="0" x2="30" y2="20" className="stroke-white" />
+              <line x1="80" y1="0" x2="80" y2="20" className="stroke-white" />
+              <line x1="110" y1="0" x2="110" y2="20" className="stroke-white" />
+              <line x1="140" y1="0" x2="140" y2="20" className="stroke-white" />
+              
+              {/* Profile Symbol */}
+              <path d="M 15 15 A 8 8 0 0 1 15 5" className="stroke-white fill-none" />
+              
+              <text x="55" y="14" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">0.2</text>
+              <text x="95" y="14" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">A</text>
+              <text x="125" y="14" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">B</text>
+              <text x="155" y="14" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">C</text>
+            </g>
+          </g>
+
+          {/* 3D Block Representation */}
+          <g transform="translate(150, 150)">
+            {/* Top Face (Datum A reference, but visible) */}
+            <path d="M 0 0 L 100 -50 L 200 0 L 100 50 Z" className="stroke-white fill-blueprint-900/50" />
+            
+            {/* Front Face (Datum C) */}
+            <path d="M 0 0 L 100 50 L 100 150 L 0 100 Z" className="stroke-white fill-blueprint-900/50" />
+            
+            {/* Side Face (Datum B) */}
+            <path d="M 100 50 L 200 0 L 200 100 L 100 150 Z" className="stroke-white fill-blueprint-900/50" />
+
+            {/* Datum A Symbol (Bottom) */}
+            <g transform="translate(100, 150)">
+               <line x1="0" y1="0" x2="0" y2="20" className="stroke-white" />
+               <rect x="-10" y="20" width="20" height="20" className="stroke-white fill-blueprint-900" />
+               <text x="0" y="35" textAnchor="middle" className="fill-white font-mono text-xs stroke-none">A</text>
+            </g>
+
+            {/* Datum B Symbol (Side) */}
+            <g transform="translate(200, 50)">
+               <line x1="0" y1="0" x2="20" y2="0" className="stroke-white" />
+               <rect x="20" y="-10" width="20" height="20" className="stroke-white fill-blueprint-900" />
+               <text x="30" y="5" textAnchor="middle" className="fill-white font-mono text-xs stroke-none">B</text>
+            </g>
+
+             {/* Datum C Symbol (Front) */}
+            <g transform="translate(0, 50)">
+               <line x1="0" y1="0" x2="-20" y2="0" className="stroke-white" />
+               <rect x="-40" y="-10" width="20" height="20" className="stroke-white fill-blueprint-900" />
+               <text x="-30" y="5" textAnchor="middle" className="fill-white font-mono text-xs stroke-none">C</text>
+            </g>
+          </g>
+
+          {/* Explanation Text */}
+          <text x="200" y="320" textAnchor="middle" className="fill-blueprint-300 font-mono text-xs stroke-none">
+            Profile applies to all integral surfaces relative to A|B|C
+          </text>
         </g>
       );
 

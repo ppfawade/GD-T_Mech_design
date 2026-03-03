@@ -5,6 +5,7 @@ import { topics } from '../data';
 import { BlueprintCanvas } from '../components/BlueprintCanvas';
 import { ArrowLeft, Book, ExternalLink } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { Helmet } from 'react-helmet-async';
 
 export const TopicViewer: React.FC = () => {
@@ -72,7 +73,7 @@ export const TopicViewer: React.FC = () => {
               Technical Details
             </h3>
             <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
-              <ReactMarkdown>{formatContent(topic.content)}</ReactMarkdown>
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{formatContent(topic.content)}</ReactMarkdown>
             </div>
           </div>
         </div>

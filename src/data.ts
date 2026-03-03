@@ -5,19 +5,60 @@ export interface Topic {
   id: string;
   title: string;
   category: Category;
+  subcategory?: string;
   description: string;
   standardRef: string; // e.g., "ASME Y14.5-2018 Section 5.4.1"
   symbol?: string; // SVG path or similar identifier
   content: string;
-  blueprintType: 'flatness' | 'straightness' | 'position' | 'circularity' | 'cylindricity' | 'perpendicularity' | 'parallelism' | 'angularity' | 'profile' | 'profile-line' | 'runout' | 'concentricity' | 'symmetry' | 'datum' | 'datum-system' | 'fits' | 'welding' | 'thread' | 'metrology' | 'surface-finish' | 'modifiers' | 'material-modifiers' | 'rule-1' | 'independency' | 'iso-14405' | 'injection-molding' | 'sheet-metal' | 'cnc-machining' | 'stackup' | 'generic';
+  blueprintType: 'flatness' | 'straightness' | 'position' | 'circularity' | 'cylindricity' | 'perpendicularity' | 'parallelism' | 'angularity' | 'profile' | 'profile-line' | 'runout' | 'concentricity' | 'symmetry' | 'datum' | 'datum-system' | 'fits' | 'welding' | 'thread' | 'metrology' | 'surface-finish' | 'modifiers' | 'material-modifiers' | 'rule-1' | 'independency' | 'iso-14405' | 'injection-molding' | 'sheet-metal' | 'cnc-machining' | 'stackup' | 'generic' | 'iso-22081';
   relatedTopics?: string[]; // IDs of related topics
 }
 
 export const topics: Topic[] = [
   {
+    id: 'iso-22081',
+    title: 'ISO 22081 General Tolerances',
+    category: 'Standards',
+    description: 'General geometrical specifications and general size specifications (replaces ISO 2768-2).',
+    standardRef: 'ISO 22081:2021',
+    symbol: 'ISO',
+    content: `
+      **Overview:**
+      ISO 22081:2021 is the modern standard for general geometrical tolerances, replacing the widely used but outdated ISO 2768-2. It is designed to support Model-Based Definition (MBD) and digital manufacturing workflows.
+
+      **Key Features:**
+      - **No Default Tables:** Unlike ISO 2768-2 (which used f, m, c, v classes), ISO 22081 does not provide pre-set tolerance values. Engineers must define general tolerances based on functional requirements and process capability.
+      - **Surface Profile:** It uses **Surface Profile** as the primary general geometrical tolerance, providing better control over form, orientation, and location than the linear/flatness/perpendicularity mix of the old standard.
+      - **Datum System:** Requires a defined datum system for the general tolerances to be valid.
+      - **3D/MBD Ready:** Specifically designed to be attached to 3D CAD models (ISO 16792), simplifying automated inspection.
+
+      **Comparison: ISO 2768-2 vs. ISO 22081**
+      | Feature | ISO 2768-2 (Old) | ISO 22081:2021 (New) |
+      | :--- | :--- | :--- |
+      | **Tolerance Value** | Predetermined tables (f, m, c, v) | No tables; user-defined |
+      | **Primary Method** | Form/Position tolerances | Surface Profile |
+      | **CAD/3D Support** | Poor; 2D-focused | High; designed for 3D/MBD |
+      | **Datums** | Often unclear | Requires defined Datums |
+
+      **Why it Matters:**
+      - **Modernizes Tolerancing:** Forces a functional approach rather than relying on arbitrary "medium" or "fine" classes.
+      - **Reduces Complexity:** Allows a single general profile note to control many non-critical features, reducing drawing clutter.
+      - **Improves Accuracy:** Encourages engineers to think about the actual functional needs of the part.
+
+      **Implementation Note:**
+      General tolerances apply only to **integral features** (surfaces, holes, slots) and not to derived features (centerlines, axes) unless specified.
+
+      **Reference:**
+      [ISO 22081:2021 - Geometrical product specifications (GPS)](https://www.iso.org/standard/72081.html)
+    `,
+    blueprintType: 'iso-22081',
+    relatedTopics: ['profile', 'datum-system', 'iso-14405-modifiers']
+  },
+  {
     id: 'flatness',
     title: 'Flatness',
     category: 'GD&T',
+    subcategory: 'Form',
     description: 'Flatness is a condition of a surface or derived median plane having all elements in one plane.',
     standardRef: 'ASME Y14.5-2018, Section 5.4.2',
     symbol: '⏥',
@@ -39,6 +80,7 @@ export const topics: Topic[] = [
     id: 'straightness',
     title: 'Straightness',
     category: 'GD&T',
+    subcategory: 'Form',
     description: 'Straightness is a condition where an element of a surface, or an axis, is a straight line.',
     standardRef: 'ASME Y14.5-2018, Section 5.4.1',
     symbol: '⎯',
@@ -61,6 +103,7 @@ export const topics: Topic[] = [
     id: 'position',
     title: 'Position',
     category: 'GD&T',
+    subcategory: 'Location',
     description: 'Position is the location of one or more features of size relative to one another or to one or more datums.',
     standardRef: 'ASME Y14.5-2018, Section 7',
     symbol: '⌖',
@@ -74,6 +117,12 @@ export const topics: Topic[] = [
       
       **Tolerance Zone:**
       Typically a cylinder (for holes) or a width (for slots) centered at the true position.
+
+      **Pro-Tip: Position vs. Concentricity/Symmetry**
+      A common pitfall is using Concentricity or Symmetry when Position is intended.
+      - **Concentricity/Symmetry** control the *median points* of a feature, which are difficult to measure and often don't reflect functional assembly requirements.
+      - **Position** controls the *axis* or *center plane* and allows for MMC modifiers (bonus tolerance), making it easier to inspect (functional gauging) and more cost-effective.
+      - **Rule of Thumb:** Always use Position unless you have a specific need to control mass balance (e.g., high-speed rotating parts).
     `,
     blueprintType: 'position',
     relatedTopics: ['perpendicularity', 'iso-14405-modifiers', 'machining-tolerances', 'fits-and-limits']
@@ -82,6 +131,7 @@ export const topics: Topic[] = [
     id: 'perpendicularity',
     title: 'Perpendicularity',
     category: 'GD&T',
+    subcategory: 'Orientation',
     description: 'Perpendicularity is the condition of a surface, axis, or line being at a 90-degree angle to a datum plane or axis.',
     standardRef: 'ASME Y14.5-2018, Section 6.3.1',
     symbol: '⟂',
@@ -142,6 +192,38 @@ export const topics: Topic[] = [
   },
 
   {
+    id: 'cnc-geometric-tolerances',
+    title: 'Geometric Tolerances in CNC',
+    category: 'Manufacturing',
+    subcategory: 'Geometric Tolerances',
+    description: 'Standard geometric capabilities of CNC machines and their impact on cost.',
+    standardRef: 'Industry Standard',
+    content: `
+      **Overview:**
+      Every machine tool has inherent geometric errors. Specifying tolerances tighter than the machine's capability requires expensive secondary operations or specialized equipment.
+
+      **Standard Capabilities (Typical 3-Axis VMC):**
+      - **Flatness:** 0.01mm - 0.05mm over 300mm.
+      - **Straightness:** 0.01mm over 300mm.
+      - **Position:** +/- 0.02mm to +/- 0.05mm (depending on thermal stability and calibration).
+      - **Perpendicularity:** 0.02mm over 100mm.
+
+      **Cost Impact:**
+      - **Standard (Milling):** Easy to hold 0.05mm position. Low cost.
+      - **Precision (Jig Boring/Grinding):** Required for position < 0.01mm. High cost (3x-5x).
+      - **Flatness:**
+        - Milled: ~0.02mm is feasible with a face mill.
+        - Lapped/Ground: Required for < 0.005mm. Very expensive.
+
+      **Machine Selection:**
+      - **Lathe:** Excellent for concentricity and runout (often < 0.01mm).
+      - **Mill:** Good for position, but circularity of interpolated holes is often 0.01mm-0.02mm out of round.
+      - **Grinder:** The go-to for tight flatness, cylindricity, and surface finish.
+    `,
+    blueprintType: 'cnc-machining',
+    relatedTopics: ['machining-tolerances', 'cnc-dfm']
+  },
+  {
     id: 'surface-finish',
     title: 'Surface Finish Symbols',
     category: 'Manufacturing',
@@ -150,18 +232,30 @@ export const topics: Topic[] = [
     symbol: '√',
     content: `
       **Ra (Average Roughness):**
-      The arithmetic average of the absolute values of the profile height deviations from the mean line.
-      
-      **Common Values (µm):**
-      - **25:** Flame cut
-      - **12.5:** Sawing, drilling
-      - **6.3:** Milling, turning (rough)
-      - **3.2:** Milling, turning (finish)
-      - **1.6:** Grinding
-      - **0.8:** Fine grinding, lapping
+      The arithmetic average of the absolute values of the profile height deviations from the mean line. It is the most common parameter used in the US.
+
+      **Rz (Mean Roughness Depth):**
+      The average of the vertical distances between the highest peak and the lowest valley in five consecutive sampling lengths. It is more sensitive to extreme peaks and valleys than Ra.
+
+      **Ra vs. Rz Relationship:**
+      While there is no exact mathematical conversion because they measure different aspects of the profile, a common rule of thumb for typical machining processes is:
+      $$ Rz \\approx 4 \\times Ra $$
+      *(Note: This factor can range from 4 to 7 depending on the manufacturing process)*
+
+      **Common Conversion Table (Approximate):**
+      | Process | Ra (µm) | Rz (µm) | N-Grade |
+      | :--- | :--- | :--- | :--- |
+      | Flame Cut | 25 | 100 | N11 |
+      | Sawing | 12.5 | 50 | N10 |
+      | Rough Milling | 6.3 | 25 | N9 |
+      | Finish Milling | 3.2 | 12.5 | N8 |
+      | Grinding | 1.6 | 6.3 | N7 |
+      | Fine Grinding | 0.8 | 3.2 | N6 |
+      | Lapping | 0.4 | 1.6 | N5 |
+      | Superfinishing | 0.2 | 0.8 | N4 |
       
       **Symbol Structure:**
-      The checkmark symbol indicates the surface requirement. Numbers above indicate the maximum roughness.
+      The checkmark symbol indicates the surface requirement. Numbers above indicate the maximum roughness (usually Ra unless specified otherwise).
     `,
     blueprintType: 'surface-finish',
     relatedTopics: ['machining-tolerances', 'flatness']
@@ -211,7 +305,7 @@ export const topics: Topic[] = [
       Specifying these modifiers ensures the inspection method matches the functional requirement.
     `,
     blueprintType: 'iso-14405',
-    relatedTopics: ['position', 'machining-tolerances', 'metrology-cmm']
+    relatedTopics: ['position', 'machining-tolerances', 'metrology-cmm', 'iso-22081']
   },
   {
     id: 'fits-and-limits',
@@ -359,6 +453,39 @@ export const topics: Topic[] = [
     relatedTopics: ['rule-1', 'iso-14405-modifiers']
   },
   {
+    id: 'virtual-condition',
+    title: 'Virtual Condition',
+    category: 'Fundamentals',
+    description: 'Virtual Condition is the constant boundary generated by the collective effects of a size feature\'s specified MMC or LMC material condition and the geometric tolerance for that material condition.',
+    standardRef: 'ASME Y14.5-2018, Section 2',
+    content: `
+      **Definition:**
+      Virtual Condition (VC) is a worst-case boundary used for analyzing clearance between mating parts and for designing functional gauges. It represents the extreme boundary of a feature's size and geometric error combined.
+
+      **Calculation:**
+      
+      **For External Features (Pins, Shafts):**
+      $$ VC = MMC_{size} + Geometric Tolerance $$
+      *Example:* Pin $\\varnothing 10 \\pm 0.1$, Position $\\varnothing 0.2$ @ MMC.
+      - $MMC_{size} = 10.1$
+      - $VC = 10.1 + 0.2 = 10.3$
+      - The mating hole must be at least $\\varnothing 10.3$ to guarantee assembly.
+
+      **For Internal Features (Holes, Slots):**
+      $$ VC = MMC_{size} - Geometric Tolerance $$
+      *Example:* Hole $\\varnothing 10 \\pm 0.1$, Position $\\varnothing 0.2$ @ MMC.
+      - $MMC_{size} = 9.9$
+      - $VC = 9.9 - 0.2 = 9.7$
+      - The mating pin must be smaller than $\\varnothing 9.7$ to guarantee assembly.
+
+      **Importance:**
+      - **Gauging:** The Virtual Condition size is the size of the fixed gauge pin or ring gauge used to inspect the part.
+      - **Assembly:** Ensures 100% interchangeability. If parts don't violate their VC, they will always assemble.
+    `,
+    blueprintType: 'generic',
+    relatedTopics: ['material-modifiers', 'fits-and-limits', 'position']
+  },
+  {
     id: 'drf-3-2-1',
     title: 'Datum Reference Frame (3-2-1 Rule)',
     category: 'Fundamentals',
@@ -385,6 +512,7 @@ export const topics: Topic[] = [
     id: 'cylindricity',
     title: 'Cylindricity',
     category: 'GD&T',
+    subcategory: 'Form',
     description: 'Cylindricity describes a condition of a surface of revolution in which all points of the surface are equidistant from a common axis.',
     standardRef: 'ASME Y14.5-2018, Section 5.4.4',
     symbol: '⌭',
@@ -407,6 +535,7 @@ export const topics: Topic[] = [
     id: 'angularity',
     title: 'Angularity',
     category: 'GD&T',
+    subcategory: 'Orientation',
     description: 'Angularity is the condition of a surface, center plane, or axis at a specified angle (other than 90°) from a datum plane or axis.',
     standardRef: 'ASME Y14.5-2018, Section 6.3.2',
     symbol: '∠',
@@ -427,6 +556,7 @@ export const topics: Topic[] = [
     id: 'profile-surface',
     title: 'Profile of a Surface',
     category: 'GD&T',
+    subcategory: 'Profile',
     description: 'Profile of a Surface controls the size, form, orientation, and location of a surface.',
     standardRef: 'ASME Y14.5-2018, Section 8',
     symbol: '⌓',
@@ -449,6 +579,7 @@ export const topics: Topic[] = [
     id: 'circular-runout',
     title: 'Circular Runout',
     category: 'GD&T',
+    subcategory: 'Runout',
     description: 'Circular Runout controls the circular elements of a surface as the part is rotated 360° about a datum axis.',
     standardRef: 'ASME Y14.5-2018, Section 9.4.1',
     symbol: '↗',
@@ -469,6 +600,7 @@ export const topics: Topic[] = [
     id: 'total-runout',
     title: 'Total Runout',
     category: 'GD&T',
+    subcategory: 'Runout',
     description: 'Total Runout controls the entire surface simultaneously as the part is rotated about a datum axis.',
     standardRef: 'ASME Y14.5-2018, Section 9.4.2',
     symbol: '⌰',
@@ -554,6 +686,17 @@ export const topics: Topic[] = [
       - Minimum: 0.5° for vertical walls.
       - Recommended: 1° - 2°.
       - Texture: Add 1° for every 0.025mm of texture depth.
+
+      **Gate Locations:**
+      - **Function:** Where plastic enters the mold cavity.
+      - **Placement:** Gate into the thickest section to allow packing.
+      - **Avoid:** Gating in high-stress areas or visible cosmetic surfaces (unless using a sub-gate).
+      - **Weld Lines:** Consider where flow fronts will meet (weld lines) and ensure they are structurally and cosmetically acceptable.
+
+      **Parting Lines:**
+      - The line where the two halves of the mold meet.
+      - **Design:** Keep on a flat plane if possible to reduce tooling cost.
+      - **Flash:** Expect small amounts of flash (excess plastic) along this line; avoid placing it on sealing surfaces.
       
       **Ribs and Bosses:**
       - Rib thickness should be 50-60% of the main wall thickness to avoid sink marks.
@@ -626,6 +769,7 @@ export const topics: Topic[] = [
     id: 'concentricity',
     title: 'Concentricity',
     category: 'GD&T',
+    subcategory: 'Location',
     description: 'Concentricity controls the median points of a feature of size relative to a datum axis.',
     standardRef: 'ASME Y14.5-2009 (Removed in 2018)',
     symbol: '◎',
@@ -649,6 +793,7 @@ export const topics: Topic[] = [
     id: 'symmetry',
     title: 'Symmetry',
     category: 'GD&T',
+    subcategory: 'Location',
     description: 'Symmetry controls the median points of a feature of size relative to a datum plane.',
     standardRef: 'ASME Y14.5-2009 (Removed in 2018)',
     symbol: '⌯',
@@ -672,6 +817,7 @@ export const topics: Topic[] = [
     id: 'profile-line',
     title: 'Profile of a Line',
     category: 'GD&T',
+    subcategory: 'Profile',
     description: 'Profile of a Line controls the form, orientation, location, and size of a 2D cross-section of a surface.',
     standardRef: 'ASME Y14.5-2018, Section 8',
     symbol: '⌒',

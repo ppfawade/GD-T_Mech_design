@@ -1,23 +1,36 @@
 
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { topics, Category } from '../data';
 import { ArrowRight } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
 export const CategoryPage: React.FC = () => {
   const { category } = useParams<{ category: string }>();
-  const categoryTopics = topics.filter(t => t.category === category);
+  const [searchParams] = useSearchParams();
+  const subcategoryFilter = searchParams.get('subcategory');
+
+  const categoryTopics = topics.filter(t => 
+    t.category === category && 
+    (!subcategoryFilter || t.subcategory === subcategoryFilter)
+  );
+
+  const displayTitle = subcategoryFilter ? `${subcategoryFilter} (${category})` : category;
 
   return (
     <div className="space-y-8">
       <Helmet>
-        <title>{category} Topics - GD&T Knowledge Base</title>
-        <meta name="description" content={`Browse engineering topics related to ${category}, including standards, symbols, and design guidelines.`} />
+        <title>{displayTitle} Topics - GD&T Knowledge Base</title>
+        <meta name="description" content={`Browse engineering topics related to ${displayTitle}, including standards, symbols, and design guidelines.`} />
       </Helmet>
       <header>
-        <h1 className="text-3xl font-bold text-slate-900">{category}</h1>
-        <p className="text-slate-500 mt-2">Browse all topics related to {category}.</p>
+        <h1 className="text-3xl font-bold text-slate-900">{displayTitle}</h1>
+        <p className="text-slate-500 mt-2">
+          {subcategoryFilter 
+            ? `Browse ${subcategoryFilter} symbols within ${category}.`
+            : `Browse all topics related to ${category}.`
+          }
+        </p>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
