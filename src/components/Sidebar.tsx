@@ -22,6 +22,8 @@ export const Sidebar: React.FC = () => {
           Categories
         </div>
         <NavItem to="/category/GD&T" icon={<PenTool size={18} />} label="GD&T Symbols" />
+        <NavItem to="/category/Fits & Limits" icon={<Settings size={18} />} label="Fits & Limits" />
+        <NavItem to="/category/Metrology" icon={<LayoutGrid size={18} />} label="Metrology" />
         <NavItem to="/category/DFMA" icon={<Settings size={18} />} label="DFMA" />
         <NavItem to="/category/Manufacturing" icon={<BookOpen size={18} />} label="Manufacturing" />
         <NavItem to="/category/Standards" icon={<Info size={18} />} label="Standards Ref" />

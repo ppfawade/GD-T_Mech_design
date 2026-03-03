@@ -1,5 +1,5 @@
 
-export type Category = 'GD&T' | 'DFMA' | 'Manufacturing' | 'Standards';
+export type Category = 'GD&T' | 'DFMA' | 'Manufacturing' | 'Standards' | 'Fits & Limits' | 'Metrology';
 
 export interface Topic {
   id: string;
@@ -9,7 +9,7 @@ export interface Topic {
   standardRef: string; // e.g., "ASME Y14.5-2018 Section 5.4.1"
   symbol?: string; // SVG path or similar identifier
   content: string;
-  blueprintType: 'flatness' | 'straightness' | 'position' | 'circularity' | 'perpendicularity' | 'parallelism' | 'profile' | 'datum' | 'generic';
+  blueprintType: 'flatness' | 'straightness' | 'position' | 'circularity' | 'perpendicularity' | 'parallelism' | 'profile' | 'datum' | 'fits' | 'welding' | 'thread' | 'metrology' | 'surface-finish' | 'modifiers' | 'injection-molding' | 'sheet-metal' | 'generic';
   relatedTopics?: string[]; // IDs of related topics
 }
 
@@ -76,7 +76,7 @@ export const topics: Topic[] = [
       Typically a cylinder (for holes) or a width (for slots) centered at the true position.
     `,
     blueprintType: 'position',
-    relatedTopics: ['perpendicularity', 'iso-14405-modifiers', 'machining-tolerances']
+    relatedTopics: ['perpendicularity', 'iso-14405-modifiers', 'machining-tolerances', 'fits-and-limits']
   },
   {
     id: 'perpendicularity',
@@ -138,7 +138,7 @@ export const topics: Topic[] = [
       Tighter tolerances cost exponentially more. Only specify tight tolerances where functionally necessary (e.g., bearing fits).
     `,
     blueprintType: 'generic',
-    relatedTopics: ['surface-finish', 'iso-14405-modifiers', 'dfma-intro']
+    relatedTopics: ['surface-finish', 'iso-14405-modifiers', 'dfma-intro', 'fits-and-limits']
   },
   {
     id: 'injection-molding-dfm',
@@ -161,7 +161,7 @@ export const topics: Topic[] = [
       - Used for stiffness.
       - Thickness should be 50-60% of the main wall thickness to avoid sink marks.
     `,
-    blueprintType: 'generic',
+    blueprintType: 'injection-molding',
     relatedTopics: ['dfma-intro', 'surface-finish']
   },
   {
@@ -181,7 +181,7 @@ export const topics: Topic[] = [
       **Relief Cuts:**
       - Corner reliefs are necessary to prevent tearing when bending flanges.
     `,
-    blueprintType: 'generic',
+    blueprintType: 'sheet-metal',
     relatedTopics: ['dfma-intro', 'machining-tolerances']
   },
   {
@@ -206,7 +206,7 @@ export const topics: Topic[] = [
       **Symbol Structure:**
       The checkmark symbol indicates the surface requirement. Numbers above indicate the maximum roughness.
     `,
-    blueprintType: 'generic',
+    blueprintType: 'surface-finish',
     relatedTopics: ['machining-tolerances', 'flatness']
   },
   {
@@ -247,7 +247,109 @@ export const topics: Topic[] = [
       
       Specifying these modifiers ensures the inspection method matches the functional requirement.
     `,
-    blueprintType: 'generic',
-    relatedTopics: ['position', 'machining-tolerances']
+    blueprintType: 'modifiers',
+    relatedTopics: ['position', 'machining-tolerances', 'metrology-cmm']
+  },
+  {
+    id: 'fits-and-limits',
+    title: 'Engineering Fits (ISO 286)',
+    category: 'Fits & Limits',
+    description: 'System of limits and fits for mating parts, defining clearance, transition, and interference fits.',
+    standardRef: 'ISO 286-1 / ANSI B4.1',
+    symbol: 'H7/g6',
+    content: `
+      Engineering fits define the relationship between two mating parts, typically a hole and a shaft.
+      
+      **Types of Fits:**
+      1. **Clearance Fit:** The shaft is always smaller than the hole. There is always a gap. Used for sliding or rotating parts.
+      2. **Transition Fit:** The shaft may be larger or smaller than the hole. Can result in either clearance or interference. Used for accurate location where disassembly is possible.
+      3. **Interference Fit (Press Fit):** The shaft is always larger than the hole. Requires force or thermal expansion to assemble. Used for permanent assembly.
+      
+      **Hole Basis System (Most Common):**
+      The hole diameter is kept constant (e.g., H7), and the shaft diameter is varied to achieve the desired fit.
+      - **H7/g6:** Precision sliding fit.
+      - **H7/k6:** Transition fit (locating).
+      - **H7/p6:** Interference fit (light press).
+    `,
+    blueprintType: 'fits',
+    relatedTopics: ['machining-tolerances', 'position']
+  },
+  {
+    id: 'metrology-cmm',
+    title: 'Coordinate Measuring Machines (CMM)',
+    category: 'Metrology',
+    description: 'Principles of CMM inspection, probe compensation, and sampling strategies for verifying complex geometries.',
+    standardRef: 'ISO 10360',
+    content: `
+      A Coordinate Measuring Machine (CMM) is a device that measures the geometry of physical objects by sensing discrete points on the surface of the object with a probe.
+      
+      **Key Concepts:**
+      - **Probe Compensation:** Correcting for the radius of the stylus tip. The machine records the center of the stylus, but the surface is one radius away.
+      - **Alignment (3-2-1 Rule):**
+        1. **Plane (3 points):** Establishes the primary datum (levels the part).
+        2. **Line (2 points):** Establishes the secondary datum (rotates the part).
+        3. **Point (1 point):** Establishes the tertiary datum (sets the origin).
+      
+      **Sampling Strategy:**
+      The number and distribution of points affect accuracy.
+      - **Discrete Pointing:** Touching individual points. Slower but often more accurate for simple features.
+      - **Scanning:** Dragging the probe across the surface. Collects high-density data (thousands of points) for form evaluation (flatness, profile).
+    `,
+    blueprintType: 'metrology',
+    relatedTopics: ['iso-14405-modifiers', 'position', 'profile']
+  },
+  {
+    id: 'welding-symbols',
+    title: 'Welding Symbols',
+    category: 'Manufacturing',
+    description: 'Standard symbols for specifying weld type, size, length, and other processing information.',
+    standardRef: 'AWS A2.4 / ISO 2553',
+    symbol: '⋀',
+    content: `
+      Welding symbols provide a shorthand way to convey complete welding information on engineering drawings.
+      
+      **Basic Structure:**
+      - **Reference Line:** Horizontal line where information is placed.
+      - **Arrow:** Points to the joint to be welded.
+      - **Tail:** Used for additional references (process, spec).
+      
+      **Arrow Side vs. Other Side:**
+      - Symbols **below** the reference line apply to the **arrow side**.
+      - Symbols **above** the reference line apply to the **other side**.
+      
+      **Common Symbols:**
+      - **Fillet Weld:** Triangular symbol.
+      - **Groove Welds:** V, U, J, Bevel symbols.
+      - **Field Weld:** Flag symbol (indicates welding happens at the installation site).
+      - **Weld All Around:** Circle at the junction of the arrow and reference line.
+    `,
+    blueprintType: 'welding',
+    relatedTopics: ['sheet-metal-dfm']
+  },
+  {
+    id: 'thread-dimensioning',
+    title: 'Screw Thread Representation',
+    category: 'Manufacturing',
+    description: 'Designating metric and unified screw threads on engineering drawings.',
+    standardRef: 'ISO 965 / ASME B1.1',
+    content: `
+      **Metric Threads (ISO):**
+      Format: **M[Diameter] x [Pitch] - [Tolerance Class]**
+      - *Example:* **M10 x 1.5 - 6g**
+      - **M:** Metric thread profile.
+      - **10:** Nominal diameter (mm).
+      - **1.5:** Pitch (mm). (Coarse pitch is often omitted, e.g., M10).
+      - **6g:** Tolerance class (6 = grade, g = position). 'g' is for external threads (bolts), 'H' is for internal threads (nuts).
+      
+      **Unified Threads (ASME):**
+      Format: **[Diameter] - [Threads Per Inch] [Form] - [Class]**
+      - *Example:* **1/4 - 20 UNC - 2A**
+      - **1/4:** Nominal diameter (inch).
+      - **20:** Threads per inch (TPI).
+      - **UNC:** Unified National Coarse (UNF = Fine).
+      - **2A:** Class of fit (1 = loose, 2 = standard, 3 = tight). 'A' = external, 'B' = internal.
+    `,
+    blueprintType: 'thread',
+    relatedTopics: ['fits-and-limits', 'machining-tolerances']
   }
 ];

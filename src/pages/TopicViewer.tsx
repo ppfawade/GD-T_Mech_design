@@ -15,6 +15,30 @@ export const TopicViewer: React.FC = () => {
     return <div className="p-8 text-center text-slate-500">Topic not found</div>;
   }
 
+  // Helper to strip indentation from template literals so they aren't parsed as code blocks
+  const formatContent = (content: string) => {
+    const lines = content.split('\n');
+    // Remove first line if empty (common in template literals)
+    if (lines.length > 0 && lines[0].trim() === '') {
+      lines.shift();
+    }
+    
+    // Find minimum indentation of non-empty lines
+    const minIndent = lines
+      .filter(line => line.trim().length > 0)
+      .reduce((min, line) => {
+        const indent = line.match(/^\s*/)?.[0].length || 0;
+        return Math.min(min, indent);
+      }, Infinity);
+
+    if (minIndent === Infinity) return content;
+
+    // Strip indentation
+    return lines
+      .map(line => (line.length >= minIndent ? line.slice(minIndent) : line))
+      .join('\n');
+  };
+
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       <Helmet>
@@ -47,8 +71,8 @@ export const TopicViewer: React.FC = () => {
               <Book className="w-5 h-5 text-blueprint-500" />
               Technical Details
             </h3>
-            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-              <ReactMarkdown>{topic.content}</ReactMarkdown>
+            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
+              <ReactMarkdown>{formatContent(topic.content)}</ReactMarkdown>
             </div>
           </div>
         </div>

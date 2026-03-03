@@ -47,6 +47,27 @@ const standards = [
     description: 'Establishes the default specification operator for linear size and provides a set of modifiers for features of size.',
     url: 'https://www.iso.org/standard/62281.html',
     relatedTopics: ['iso-14405-modifiers']
+  },
+  {
+    code: 'ISO 286-1:2010',
+    title: 'Geometrical product specifications (GPS) - ISO code system for tolerances on linear sizes',
+    description: 'Defines the basis of tolerances, deviations and fits. It establishes the system of limits and fits for mating parts (e.g., H7/g6).',
+    url: 'https://www.iso.org/standard/45975.html',
+    relatedTopics: ['fits-and-limits']
+  },
+  {
+    code: 'ISO 10360-1:2000',
+    title: 'Geometrical Product Specifications (GPS) - Acceptance and reverification tests for CMMs',
+    description: 'Specifies the acceptance and reverification tests for coordinate measuring machines (CMMs).',
+    url: 'https://www.iso.org/standard/26225.html',
+    relatedTopics: ['metrology-cmm']
+  },
+  {
+    code: 'AWS A2.4:2020',
+    title: 'Standard Symbols for Welding, Brazing, and Nondestructive Examination',
+    description: 'Establishes a method for specifying certain welding, brazing, and nondestructive examination information by means of graphical symbols.',
+    url: 'https://pubs.aws.org/p/1811/a242020-standard-symbols-for-welding-brazing-and-nondestructive-examination',
+    relatedTopics: ['welding-symbols']
   }
 ];
 
