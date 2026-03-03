@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutGrid, BookOpen, Settings, Info, PenTool, Database } from 'lucide-react';
+import { LayoutGrid, BookOpen, Settings, Info, PenTool, Database, GraduationCap, Layers } from 'lucide-react';
 import { clsx } from 'clsx';
 
 export const Sidebar: React.FC = () => {
@@ -21,8 +21,10 @@ export const Sidebar: React.FC = () => {
         <div className="pt-4 pb-2 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">
           Categories
         </div>
+        <NavItem to="/category/Fundamentals" icon={<GraduationCap size={18} />} label="Fundamentals" />
         <NavItem to="/category/GD&T" icon={<PenTool size={18} />} label="GD&T Symbols" />
         <NavItem to="/category/Fits & Limits" icon={<Settings size={18} />} label="Fits & Limits" />
+        <NavItem to="/category/Stackups" icon={<Layers size={18} />} label="Tolerance Stackups" />
         <NavItem to="/category/Metrology" icon={<LayoutGrid size={18} />} label="Metrology" />
         <NavItem to="/category/DFMA" icon={<Settings size={18} />} label="DFMA" />
         <NavItem to="/category/Manufacturing" icon={<BookOpen size={18} />} label="Manufacturing" />
@@ -30,7 +32,7 @@ export const Sidebar: React.FC = () => {
       </nav>
 
       <div className="p-4 border-t border-slate-800 text-xs text-slate-500">
-        v1.0.0 • ASME Y14.5-2018
+        v1.1.0 • ASME Y14.5-2018
       </div>
     </div>
   );

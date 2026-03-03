@@ -1,5 +1,5 @@
 
-export type Category = 'GD&T' | 'DFMA' | 'Manufacturing' | 'Standards' | 'Fits & Limits' | 'Metrology';
+export type Category = 'GD&T' | 'Fundamentals' | 'Stackups' | 'DFMA' | 'Manufacturing' | 'Standards' | 'Fits & Limits' | 'Metrology';
 
 export interface Topic {
   id: string;
@@ -9,7 +9,7 @@ export interface Topic {
   standardRef: string; // e.g., "ASME Y14.5-2018 Section 5.4.1"
   symbol?: string; // SVG path or similar identifier
   content: string;
-  blueprintType: 'flatness' | 'straightness' | 'position' | 'circularity' | 'perpendicularity' | 'parallelism' | 'profile' | 'datum' | 'fits' | 'welding' | 'thread' | 'metrology' | 'surface-finish' | 'modifiers' | 'injection-molding' | 'sheet-metal' | 'generic';
+  blueprintType: 'flatness' | 'straightness' | 'position' | 'circularity' | 'cylindricity' | 'perpendicularity' | 'parallelism' | 'angularity' | 'profile' | 'profile-line' | 'runout' | 'concentricity' | 'symmetry' | 'datum' | 'fits' | 'welding' | 'thread' | 'metrology' | 'surface-finish' | 'modifiers' | 'injection-molding' | 'sheet-metal' | 'cnc-machining' | 'stackup' | 'generic';
   relatedTopics?: string[]; // IDs of related topics
 }
 
@@ -351,5 +351,324 @@ export const topics: Topic[] = [
     `,
     blueprintType: 'thread',
     relatedTopics: ['fits-and-limits', 'machining-tolerances']
+  },
+  // --- Fundamentals & Rules ---
+  {
+    id: 'rule-1',
+    title: 'Rule #1 (Envelope Principle)',
+    category: 'Fundamentals',
+    description: 'The Envelope Principle states that the size tolerance of a feature controls its form.',
+    standardRef: 'ASME Y14.5-2018, Section 5.8.1',
+    content: `
+      **Definition:**
+      Rule #1 (Taylor Principle) states that where only a tolerance of size is specified, the limits of size of an individual feature prescribe the extent to which variations in its form—as well as in its size—are allowed.
+      
+      **Key Implications:**
+      - **Perfect Form at MMC:** When a feature is at its Maximum Material Condition (MMC), it must have perfect form (e.g., a pin at its largest diameter must be perfectly straight).
+      - **No Form Control at LMC:** As the feature departs from MMC towards Least Material Condition (LMC), a form error equal to the amount of departure is permitted.
+      
+      **Exceptions:**
+      - Stock materials (e.g., bar stock) often have form tolerances that exceed size tolerances.
+      - Parts subject to free-state variation (flexible parts).
+      - When the "Independency" symbol is applied.
+    `,
+    blueprintType: 'generic',
+    relatedTopics: ['independency', 'straightness', 'flatness']
+  },
+  {
+    id: 'independency',
+    title: 'Independency Principle',
+    category: 'Fundamentals',
+    description: 'The principle that size and form are independent unless specified otherwise.',
+    standardRef: 'ISO 8015 / ASME Y14.5-2018 (Option)',
+    symbol: 'Ⓘ',
+    content: `
+      **ISO 8015 Default:**
+      By default in ISO GPS standards, every dimensional and geometrical requirement is independent. Size does NOT control form. You must specify the Envelope requirement (E) if you want Rule #1 behavior.
+      
+      **ASME Y14.5 Option:**
+      In ASME, Rule #1 is default. However, you can invoke the Independency Principle by placing the Ⓘ symbol next to the feature of size dimension. This allows form error to exceed the size tolerance.
+      
+      **Design Intent:**
+      Use when the function of the feature (e.g., strength) depends on size, but the assembly (e.g., fit) is controlled by a separate geometric tolerance, or when form is not critical.
+    `,
+    blueprintType: 'modifiers',
+    relatedTopics: ['rule-1', 'iso-14405-modifiers']
+  },
+  {
+    id: 'drf-3-2-1',
+    title: 'Datum Reference Frame (3-2-1 Rule)',
+    category: 'Fundamentals',
+    description: 'The 3-2-1 rule is a method for locking all 6 degrees of freedom of a part in space.',
+    standardRef: 'ASME Y14.5-2018, Section 4',
+    content: `
+      **Degrees of Freedom:**
+      A rigid body has 6 degrees of freedom: 3 translations (X, Y, Z) and 3 rotations (u, v, w).
+      
+      **The 3-2-1 Rule:**
+      1.  **Primary Datum (3 points):** Establishes a plane. Constrains 3 degrees of freedom (1 translation, 2 rotations).
+      2.  **Secondary Datum (2 points):** Establishes a line. Constrains 2 degrees of freedom (1 translation, 1 rotation).
+      3.  **Tertiary Datum (1 point):** Establishes a point. Constrains 1 degree of freedom (1 translation).
+      
+      **Datum Feature vs. Simulated Datum:**
+      - **Datum Feature:** The actual physical surface on the part (imperfect).
+      - **Simulated Datum:** The theoretical perfect plane/axis derived from the inspection equipment (e.g., surface plate, collet) contacting the datum feature.
+    `,
+    blueprintType: 'datum',
+    relatedTopics: ['position', 'profile-surface', 'metrology-cmm']
+  },
+  // --- Additional Symbols ---
+  {
+    id: 'cylindricity',
+    title: 'Cylindricity',
+    category: 'GD&T',
+    description: 'Cylindricity describes a condition of a surface of revolution in which all points of the surface are equidistant from a common axis.',
+    standardRef: 'ASME Y14.5-2018, Section 5.4.4',
+    symbol: '⌭',
+    content: `
+      **Definition:**
+      Cylindricity is a form control that specifies a tolerance zone bounded by two concentric cylinders within which the surface must lie.
+      
+      **Key Characteristics:**
+      - Controls circularity, straightness, and taper simultaneously.
+      - Does NOT require a datum.
+      - Cannot use MMC/LMC modifiers.
+      
+      **Inspection:**
+      Difficult to measure. Requires a CMM or a rotating spindle with a height gauge (spiral trace).
+    `,
+    blueprintType: 'cylindricity',
+    relatedTopics: ['circularity', 'straightness', 'total-runout']
+  },
+  {
+    id: 'angularity',
+    title: 'Angularity',
+    category: 'GD&T',
+    description: 'Angularity is the condition of a surface, center plane, or axis at a specified angle (other than 90°) from a datum plane or axis.',
+    standardRef: 'ASME Y14.5-2018, Section 6.3.2',
+    symbol: '∠',
+    content: `
+      **Definition:**
+      Angularity controls the orientation of a feature to a datum at a basic angle.
+      
+      **Tolerance Zone:**
+      Two parallel planes (for a surface) or a cylinder (for an axis) inclined at the basic angle to the datum.
+      
+      **Design Intent:**
+      Used for chamfers, angled mounting surfaces, or hydraulic ports.
+    `,
+    blueprintType: 'angularity',
+    relatedTopics: ['perpendicularity', 'parallelism', 'profile-surface']
+  },
+  {
+    id: 'profile-surface',
+    title: 'Profile of a Surface',
+    category: 'GD&T',
+    description: 'Profile of a Surface controls the size, form, orientation, and location of a surface.',
+    standardRef: 'ASME Y14.5-2018, Section 8',
+    symbol: '⌓',
+    content: `
+      **Definition:**
+      Profile of a surface describes a 3D tolerance zone around the true profile of a feature. It is the most powerful and versatile GD&T symbol.
+      
+      **Key Characteristics:**
+      - Can control Form, Orientation, Location, and Size simultaneously.
+      - Can be used with or without datums.
+      - Tolerance zone is typically bilateral (equally disposed) but can be unilateral.
+      
+      **Design Intent:**
+      Used for complex curves (airfoils), casting surfaces, and coplanar surfaces.
+    `,
+    blueprintType: 'profile',
+    relatedTopics: ['profile-line', 'position', 'flatness']
+  },
+  {
+    id: 'circular-runout',
+    title: 'Circular Runout',
+    category: 'GD&T',
+    description: 'Circular Runout controls the circular elements of a surface as the part is rotated 360° about a datum axis.',
+    standardRef: 'ASME Y14.5-2018, Section 9.4.1',
+    symbol: '↗',
+    content: `
+      **Definition:**
+      Controls the cumulative error of circularity and coaxiality (offset) at any specific cross-section.
+      
+      **Inspection:**
+      Rotate the part on its datum axis and measure the variation with a dial indicator at a *single* fixed position. Repeat at multiple positions.
+      
+      **Design Intent:**
+      Used for sealing surfaces, bearing seats, and rotating components where balance is critical.
+    `,
+    blueprintType: 'runout',
+    relatedTopics: ['total-runout', 'circularity', 'concentricity']
+  },
+  {
+    id: 'total-runout',
+    title: 'Total Runout',
+    category: 'GD&T',
+    description: 'Total Runout controls the entire surface simultaneously as the part is rotated about a datum axis.',
+    standardRef: 'ASME Y14.5-2018, Section 9.4.2',
+    symbol: '⌰',
+    content: `
+      **Definition:**
+      Controls the cumulative error of circularity, straightness, coaxiality, angularity, and taper.
+      
+      **Inspection:**
+      Rotate the part on its datum axis while moving the dial indicator along the full length of the feature.
+      
+      **Design Intent:**
+      Used for critical rotating shafts where dynamic balance and surface contact are paramount.
+    `,
+    blueprintType: 'runout',
+    relatedTopics: ['circular-runout', 'cylindricity']
+  },
+  // --- Modifiers ---
+  {
+    id: 'material-modifiers',
+    title: 'Material Modifiers (MMC, LMC, RFS)',
+    category: 'Fundamentals',
+    description: 'Understanding Maximum Material Condition (MMC), Least Material Condition (LMC), and Regardless of Feature Size (RFS).',
+    standardRef: 'ASME Y14.5-2018, Section 2',
+    symbol: 'Ⓜ',
+    content: `
+      **RFS (Regardless of Feature Size):**
+      - The default condition in ASME Y14.5 (since 1994).
+      - The geometric tolerance applies regardless of the actual size of the feature.
+      - No bonus tolerance is allowed.
+      
+      **MMC (Maximum Material Condition) Ⓜ:**
+      - The condition where the feature contains the maximum amount of material (smallest hole, largest pin).
+      - **Bonus Tolerance:** As the feature size departs from MMC, the geometric tolerance increases by the amount of departure.
+      - **Design Intent:** Used for clearance fits (assembly). If the hole is larger, its position can be off by more and the pin will still fit.
+      
+      **LMC (Least Material Condition) Ⓛ:**
+      - The condition where the feature contains the least amount of material (largest hole, smallest pin).
+      - **Design Intent:** Used for wall thickness preservation or edge distance.
+    `,
+    blueprintType: 'modifiers',
+    relatedTopics: ['position', 'fits-and-limits']
+  },
+  // --- DFMA & Stackups ---
+  {
+    id: 'cnc-dfm',
+    title: 'CNC Machining DFM',
+    category: 'DFMA',
+    description: 'Design guidelines for CNC milled and turned parts to reduce cost and improve quality.',
+    standardRef: 'Industry Best Practice',
+    content: `
+      **Internal Radii:**
+      - Avoid sharp internal corners. End mills are round.
+      - Radius should be slightly larger than the standard tool radius to allow for trochoidal milling (prevent chatter).
+      - *Rule:* Corner Radius > 1/3 x Depth of Cut.
+      
+      **Hole Depth:**
+      - Deep holes drift and break drills.
+      - Keep depth < 5x Diameter if possible.
+      - >10x Diameter requires gun drilling (expensive).
+      
+      **Tolerances:**
+      - Standard: +/- 0.1mm (0.005").
+      - Precision: +/- 0.025mm (0.001").
+      - High Precision: +/- 0.005mm (0.0002") -> Requires grinding/lapping.
+    `,
+    blueprintType: 'cnc-machining',
+    relatedTopics: ['machining-tolerances', 'surface-finish']
+  },
+  {
+    id: 'stackup-basics',
+    title: 'Tolerance Stackup Basics',
+    category: 'Stackups',
+    description: 'Introduction to 1D tolerance stackup analysis: Worst Case vs. RSS.',
+    standardRef: 'ASME Y14.5-2018, Appendix B',
+    content: `
+      **Goal:** Determine the cumulative variation in an assembly gap or overall dimension.
+      
+      **1. Worst Case Analysis:**
+      - Assumes all dimensions are at their limit simultaneously.
+      - **Formula:** $T_{asm} = \sum T_i$
+      - **Pros:** Guarantees 100% interchangeability.
+      - **Cons:** Can result in overly tight (expensive) component tolerances.
+      
+      **2. RSS (Root Sum Squares):**
+      - Assumes variations are statistically distributed (Normal distribution).
+      - **Formula:** $T_{asm} = \sqrt{\sum T_i^2}$
+      - **Pros:** Allows looser component tolerances.
+      - **Cons:** Small risk of non-assembly (typically < 0.3% if process is centered).
+      
+      **Procedure:**
+      1. Identify the gap (A-B).
+      2. Create the loop diagram (vector chain).
+      3. Determine mean values and sensitivities.
+      4. Calculate.
+    `,
+    blueprintType: 'stackup',
+    relatedTopics: ['fits-and-limits', 'position']
+  },
+  {
+    id: 'concentricity',
+    title: 'Concentricity',
+    category: 'GD&T',
+    description: 'Concentricity controls the median points of a feature of size relative to a datum axis.',
+    standardRef: 'ASME Y14.5-2009 (Removed in 2018)',
+    symbol: '◎',
+    content: `
+      **Definition:**
+      Concentricity is a location control that requires the median points of all diametrically opposed elements of the feature of size to fall within a cylindrical tolerance zone centered on the datum axis.
+      
+      **Status:**
+      **Removed in ASME Y14.5-2018.** It has been replaced by Position or Profile because it is difficult to inspect and often misunderstood.
+      
+      **Inspection:**
+      Requires finding the median points of cross-sections, which is mathematically complex and requires a CMM or precision spindle.
+      
+      **Pro-Tip:**
+      Do not use Concentricity. Use **Position** or **Runout** instead.
+    `,
+    blueprintType: 'concentricity',
+    relatedTopics: ['position', 'circular-runout']
+  },
+  {
+    id: 'symmetry',
+    title: 'Symmetry',
+    category: 'GD&T',
+    description: 'Symmetry controls the median points of a feature of size relative to a datum plane.',
+    standardRef: 'ASME Y14.5-2009 (Removed in 2018)',
+    symbol: '⌯',
+    content: `
+      **Definition:**
+      Symmetry is a location control that requires the median points of all opposed elements of the feature of size to fall within a tolerance zone centered on the datum plane.
+      
+      **Status:**
+      **Removed in ASME Y14.5-2018.** It has been replaced by Position or Profile.
+      
+      **Inspection:**
+      Similar to concentricity, it requires finding median points, which is difficult.
+      
+      **Pro-Tip:**
+      Do not use Symmetry. Use **Position** instead.
+    `,
+    blueprintType: 'symmetry',
+    relatedTopics: ['position', 'profile-surface']
+  },
+  {
+    id: 'profile-line',
+    title: 'Profile of a Line',
+    category: 'GD&T',
+    description: 'Profile of a Line controls the form, orientation, location, and size of a 2D cross-section of a surface.',
+    standardRef: 'ASME Y14.5-2018, Section 8',
+    symbol: '⌒',
+    content: `
+      **Definition:**
+      Profile of a Line describes a 2D tolerance zone around the true profile of a feature at each cross-section.
+      
+      **Key Characteristics:**
+      - Controls the surface element at individual cross-sections, not the entire surface simultaneously.
+      - Tolerance zone is two parallel curves.
+      
+      **Design Intent:**
+      Used for extrusions or when the cross-sectional shape is critical but the longitudinal form is not (e.g., a dashboard trim that must match a template but can bow along its length).
+    `,
+    blueprintType: 'profile-line',
+    relatedTopics: ['profile-surface', 'flatness']
   }
 ];
