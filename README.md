@@ -1,11 +1,6 @@
 # Geometric Dimensioning and Tolerancing (GD&T) Knowledge Base
 ## A Digital Compendium for Mechanical Design and Manufacturing
 
-**Author:** [Your Name/Organization]  
-**Date:** October 2023  
-**Version:** 1.0.0  
-**Department:** Mechanical Engineering & Design Methodology
-
 ---
 
 ### Abstract
@@ -13,14 +8,6 @@
 This repository contains the source code and documentation for the **GD&T Knowledge Base**, a web-based pedagogical tool designed to assist mechanical engineers, students, and manufacturing professionals in understanding and applying the principles of Geometric Dimensioning and Tolerancing (GD&T), Design for Manufacture and Assembly (DFMA), and related international standards (ASME/ISO).
 
 The application serves as an interactive reference manual, visualizing complex tolerance zones and providing cross-referenced data to ensure design intent is communicated unambiguously.
-
----
-
-### Foreword by the Reviewing Committee
-
-> *"In the domain of mechanical engineering, the drawing is the contract. Ambiguity is the enemy of quality and cost. This project successfully bridges the gap between static textbook definitions and the dynamic needs of modern engineering design. By integrating visual representations of tolerance zones (e.g., the difference between Surface Straightness and Axis Straightness) directly with the relevant standards, it fosters a deeper intuition for the 'grammar' of engineering."*
->
-> — **Prof. A. K. Metric**, Ph.D., Dept. of Mechanical Engineering
 
 ---
 

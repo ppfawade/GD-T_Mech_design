@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://your-domain.com/</loc>
+    <loc>https://gdt-mech-design.vercel.app/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://your-domain.com/category/GD&amp;T</loc>
+    <loc>https://gdt-mech-design.vercel.app/category/GD&amp;T</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://your-domain.com/category/DFMA</loc>
+    <loc>https://gdt-mech-design.vercel.app/category/DFMA</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://your-domain.com/category/Manufacturing</loc>
+    <loc>https://gdt-mech-design.vercel.app/category/Manufacturing</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://your-domain.com/category/Standards</loc>
+    <loc>https://gdt-mech-design.vercel.app/category/Standards</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <!-- Topics -->
   <url>
-    <loc>https://your-domain.com/topic/flatness</loc>
+    <loc>https://gdt-mech-design.vercel.app/topic/flatness</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://your-domain.com/topic/straightness</loc>
+    <loc>https://gdt-mech-design.vercel.app/topic/straightness</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://your-domain.com/topic/position</loc>
+    <loc>https://gdt-mech-design.vercel.app/topic/position</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://your-domain.com/topic/perpendicularity</loc>
+    <loc>https://gdt-mech-design.vercel.app/topic/perpendicularity</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://your-domain.com/topic/iso-14405-modifiers</loc>
+    <loc>https://gdt-mech-design.vercel.app/topic/iso-14405-modifiers</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

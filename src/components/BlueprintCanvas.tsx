@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { clsx } from 'clsx';
 
 interface BlueprintCanvasProps {
-  type: 'flatness' | 'straightness' | 'position' | 'circularity' | 'cylindricity' | 'perpendicularity' | 'parallelism' | 'angularity' | 'profile' | 'profile-line' | 'runout' | 'concentricity' | 'symmetry' | 'datum' | 'datum-system' | 'fits' | 'welding' | 'thread' | 'metrology' | 'surface-finish' | 'modifiers' | 'material-modifiers' | 'rule-1' | 'independency' | 'injection-molding' | 'sheet-metal' | 'cnc-machining' | 'stackup' | 'generic';
+  type: 'flatness' | 'straightness' | 'position' | 'circularity' | 'cylindricity' | 'perpendicularity' | 'parallelism' | 'angularity' | 'profile' | 'profile-line' | 'runout' | 'concentricity' | 'symmetry' | 'datum' | 'datum-system' | 'fits' | 'welding' | 'thread' | 'metrology' | 'surface-finish' | 'modifiers' | 'material-modifiers' | 'rule-1' | 'independency' | 'iso-14405' | 'injection-molding' | 'sheet-metal' | 'cnc-machining' | 'stackup' | 'generic';
   className?: string;
 }
 
@@ -662,6 +662,119 @@ function renderDiagram(type: string) {
              <text x="65" y="22" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">Ø0.1 Ⓜ</text>
              <text x="120" y="22" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">A</text>
           </g>
+        </g>
+      );
+
+    case 'iso-14405':
+      return (
+        <g>
+          {/* Legend Background */}
+          <rect x="260" y="20" width="130" height="100" className="fill-blueprint-900 stroke-blueprint-500 opacity-80" />
+          
+          {/* Real Feature (Irregular Blob) */}
+          <path 
+            d="M 150 50 
+               C 220 50, 250 100, 250 150 
+               C 250 220, 200 260, 150 250 
+               C 80 240, 40 200, 50 150 
+               C 60 90, 100 50, 150 50 Z" 
+            className="stroke-white fill-blueprint-800 stroke-2 opacity-60" 
+          />
+          <text x="150" y="150" textAnchor="middle" className="fill-white font-mono text-xs stroke-none opacity-50">REAL FEATURE</text>
+
+          {/* LP (Two Point Size) */}
+          <line x1="50" y1="150" x2="250" y2="150" className="stroke-yellow-400 stroke-2" strokeDasharray="4 4" />
+          <circle cx="50" cy="150" r="3" className="fill-yellow-400 stroke-none" />
+          <circle cx="250" cy="150" r="3" className="fill-yellow-400 stroke-none" />
+          <text x="280" y="40" className="fill-yellow-400 font-mono text-xs stroke-none font-bold">LP: 2-POINT</text>
+
+          {/* GX (Maximum Inscribed - Inner Circle) */}
+          <circle cx="155" cy="155" r="85" className="stroke-green-400 fill-none stroke-2" strokeDasharray="2 2" />
+          <text x="280" y="60" className="fill-green-400 font-mono text-xs stroke-none font-bold">GX: MAX INSCRIBED</text>
+
+          {/* GN (Minimum Circumscribed - Outer Circle) */}
+          <circle cx="145" cy="148" r="110" className="stroke-red-400 fill-none stroke-2" strokeDasharray="6 2" />
+          <text x="280" y="80" className="fill-red-400 font-mono text-xs stroke-none font-bold">GN: MIN CIRCUMSCRIBED</text>
+          
+          {/* GG (Least Squares - Average) */}
+          <circle cx="150" cy="150" r="98" className="stroke-blue-400 fill-none stroke-2" />
+          <text x="280" y="100" className="fill-blue-400 font-mono text-xs stroke-none font-bold">GG: LEAST SQUARES</text>
+
+          {/* Dimension Line Example */}
+          <line x1="50" y1="280" x2="250" y2="280" className="stroke-white" />
+          <line x1="50" y1="270" x2="50" y2="290" className="stroke-white" />
+          <line x1="250" y1="270" x2="250" y2="290" className="stroke-white" />
+          <text x="150" y="295" textAnchor="middle" className="fill-white font-mono text-sm stroke-none">Ø20 ±0.1 ⒼⓃ</text>
+        </g>
+      );
+
+    case 'cnc-machining':
+      return (
+        <g>
+          {/* Pocket with Internal Radii */}
+          <path d="M 50 50 L 250 50 L 250 200 L 50 200 Z" className="stroke-white fill-blueprint-800 stroke-2" />
+          <path d="M 80 80 L 220 80 L 220 170 L 80 170 Z" className="stroke-white fill-blueprint-900 stroke-2" />
+          
+          {/* Tool Path */}
+          <circle cx="80" cy="80" r="10" className="stroke-yellow-400 fill-none stroke-dashed" />
+          <text x="95" y="75" className="fill-yellow-400 font-mono text-xs stroke-none">TOOL Ø20</text>
+          
+          {/* Corner Radius */}
+          <path d="M 80 95 A 15 15 0 0 1 95 80" className="stroke-green-400 fill-none stroke-2" />
+          <text x="100" y="100" className="fill-green-400 font-mono text-xs stroke-none font-bold">R15 (R_part {'>'} R_tool)</text>
+          
+          {/* Deep Hole */}
+          <rect x="300" y="50" width="40" height="200" className="stroke-white fill-blueprint-800" />
+          <line x1="320" y1="50" x2="320" y2="250" className="stroke-blueprint-300 stroke-dashed" />
+          <text x="350" y="150" className="fill-white font-mono text-xs stroke-none" style={{ writingMode: 'vertical-rl' }}>DEPTH {'<'} 5x DIA</text>
+        </g>
+      );
+
+    case 'injection-molding':
+      return (
+        <g>
+          {/* Part Cross Section */}
+          <path d="M 50 250 L 100 50 L 300 50 L 350 250" className="stroke-white fill-none stroke-2" />
+          <path d="M 50 250 L 350 250" className="stroke-blueprint-500 stroke-dashed" />
+          
+          {/* Draft Angle */}
+          <line x1="100" y1="50" x2="100" y2="250" className="stroke-red-400 stroke-dashed opacity-50" />
+          <path d="M 100 200 A 50 50 0 0 0 90 250" className="stroke-yellow-400 fill-none" />
+          <text x="110" y="150" className="fill-yellow-400 font-mono text-xs stroke-none">DRAFT 1°-2°</text>
+          
+          {/* Uniform Wall */}
+          <path d="M 120 50 L 120 230 L 280 230 L 280 50" className="stroke-white fill-blueprint-800 opacity-50" />
+          <text x="200" y="140" textAnchor="middle" className="fill-green-400 font-mono text-xs stroke-none">UNIFORM WALL</text>
+          
+          {/* Rib with Sink Mark Warning */}
+          <path d="M 200 230 L 200 280" className="stroke-white fill-none" />
+          <path d="M 190 230 L 195 280 L 205 280 L 210 230" className="stroke-white fill-blueprint-700" />
+          <text x="230" y="270" className="fill-red-400 font-mono text-xs stroke-none">RIB {'<'} 60% WALL</text>
+        </g>
+      );
+
+    case 'sheet-metal':
+      return (
+        <g>
+          {/* Bent Part */}
+          <path d="M 50 200 L 150 200 A 20 20 0 0 0 170 180 L 170 50" className="stroke-white fill-none stroke-4" />
+          
+          {/* Bend Radius */}
+          <circle cx="150" cy="180" r="20" className="stroke-green-400 fill-none stroke-dashed" />
+          <line x1="150" y1="180" x2="170" y2="180" className="stroke-green-400" />
+          <text x="120" y="170" className="fill-green-400 font-mono text-xs stroke-none">R {'>='} T</text>
+          
+          {/* Hole Placement */}
+          <circle cx="100" cy="200" r="10" className="stroke-white fill-blueprint-900" />
+          <line x1="150" y1="200" x2="150" y2="230" className="stroke-blueprint-300" /> {/* Bend Line Start */}
+          <line x1="110" y1="200" x2="110" y2="230" className="stroke-blueprint-300" /> {/* Hole Edge */}
+          <line x1="110" y1="220" x2="150" y2="220" className="stroke-yellow-400 marker-end marker-start" />
+          <text x="130" y="240" textAnchor="middle" className="fill-yellow-400 font-mono text-xs stroke-none">Dist {'>'} 2.5T + R</text>
+          
+          {/* Relief Cut Detail */}
+          <rect x="250" y="100" width="100" height="100" className="stroke-white fill-blueprint-800" />
+          <path d="M 250 150 L 280 150 L 280 170 L 250 170" className="stroke-white fill-blueprint-900" />
+          <text x="300" y="165" className="fill-white font-mono text-xs stroke-none">RELIEF CUT</text>
         </g>
       );
 

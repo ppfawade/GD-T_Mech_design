@@ -9,7 +9,7 @@ export interface Topic {
   standardRef: string; // e.g., "ASME Y14.5-2018 Section 5.4.1"
   symbol?: string; // SVG path or similar identifier
   content: string;
-  blueprintType: 'flatness' | 'straightness' | 'position' | 'circularity' | 'cylindricity' | 'perpendicularity' | 'parallelism' | 'angularity' | 'profile' | 'profile-line' | 'runout' | 'concentricity' | 'symmetry' | 'datum' | 'datum-system' | 'fits' | 'welding' | 'thread' | 'metrology' | 'surface-finish' | 'modifiers' | 'material-modifiers' | 'rule-1' | 'independency' | 'injection-molding' | 'sheet-metal' | 'cnc-machining' | 'stackup' | 'generic';
+  blueprintType: 'flatness' | 'straightness' | 'position' | 'circularity' | 'cylindricity' | 'perpendicularity' | 'parallelism' | 'angularity' | 'profile' | 'profile-line' | 'runout' | 'concentricity' | 'symmetry' | 'datum' | 'datum-system' | 'fits' | 'welding' | 'thread' | 'metrology' | 'surface-finish' | 'modifiers' | 'material-modifiers' | 'rule-1' | 'independency' | 'iso-14405' | 'injection-molding' | 'sheet-metal' | 'cnc-machining' | 'stackup' | 'generic';
   relatedTopics?: string[]; // IDs of related topics
 }
 
@@ -140,50 +140,7 @@ export const topics: Topic[] = [
     blueprintType: 'generic',
     relatedTopics: ['surface-finish', 'iso-14405-modifiers', 'dfma-intro', 'fits-and-limits']
   },
-  {
-    id: 'injection-molding-dfm',
-    title: 'Injection Molding DFM',
-    category: 'DFMA',
-    description: 'Design guidelines for plastic injection molded parts to ensure moldability and quality.',
-    standardRef: 'Industry Standard',
-    content: `
-      **Wall Thickness:**
-      - Maintain uniform wall thickness to prevent sink marks and warping.
-      - Recommended range: 1.5mm - 3.0mm for most thermoplastics.
-      
-      **Draft Angles:**
-      - Essential for ejecting the part from the mold.
-      - Minimum 0.5° for vertical walls.
-      - 1° - 2° is standard.
-      - Add 1° for every 0.025mm of texture depth.
-      
-      **Ribs:**
-      - Used for stiffness.
-      - Thickness should be 50-60% of the main wall thickness to avoid sink marks.
-    `,
-    blueprintType: 'injection-molding',
-    relatedTopics: ['dfma-intro', 'surface-finish']
-  },
-  {
-    id: 'sheet-metal-dfm',
-    title: 'Sheet Metal DFM',
-    category: 'DFMA',
-    description: 'Design rules for sheet metal fabrication including bending, punching, and welding.',
-    standardRef: 'Industry Standard',
-    content: `
-      **Bend Radius:**
-      - Minimum bend radius depends on material thickness and type.
-      - Generally, Min Radius = Material Thickness (1T).
-      
-      **Hole Placement:**
-      - Keep holes at least 2T away from bend lines to prevent distortion.
-      
-      **Relief Cuts:**
-      - Corner reliefs are necessary to prevent tearing when bending flanges.
-    `,
-    blueprintType: 'sheet-metal',
-    relatedTopics: ['dfma-intro', 'machining-tolerances']
-  },
+
   {
     id: 'surface-finish',
     title: 'Surface Finish Symbols',
@@ -236,6 +193,12 @@ export const topics: Topic[] = [
       - **(CC) Circumference diameter:** The diameter calculated from the measured circumference (e.g., using a Pi tape).
       - **(CA) Area diameter:** The diameter calculated from the measured cross-sectional area.
       
+      **Statistical Size Modifiers:**
+      - **(SA) Average size:** The arithmetic mean of all local sizes.
+      - **(SN) Minimum size:** The smallest local size found on the feature.
+      - **(SX) Maximum size:** The largest local size found on the feature.
+      - **(SD) Size deviation:** The difference between max and min sizes (range).
+
       **Envelope Requirement:**
       - **(E):** The Envelope Requirement (Taylor Principle). It states that the feature must not violate the perfect form boundary at Maximum Material Condition (MMC). In ASME Y14.5, this is Rule #1 (default), but in ISO, it must be specified with the (E) symbol unless the drawing invokes a standard that makes it default.
 
@@ -247,7 +210,7 @@ export const topics: Topic[] = [
       
       Specifying these modifiers ensures the inspection method matches the functional requirement.
     `,
-    blueprintType: 'modifiers',
+    blueprintType: 'iso-14405',
     relatedTopics: ['position', 'machining-tolerances', 'metrology-cmm']
   },
   {
@@ -573,6 +536,61 @@ export const topics: Topic[] = [
     `,
     blueprintType: 'cnc-machining',
     relatedTopics: ['machining-tolerances', 'surface-finish']
+  },
+  {
+    id: 'injection-molding-dfm',
+    title: 'Injection Molding DFM',
+    category: 'DFMA',
+    description: 'Design guidelines for plastic injection molded parts to ensure moldability and quality.',
+    standardRef: 'Industry Best Practice',
+    content: `
+      **Wall Thickness:**
+      - Maintain uniform wall thickness to prevent sink marks and warping.
+      - Recommended range: 1.5mm - 3.0mm.
+      - Transitions should be gradual (3:1 ratio).
+      
+      **Draft Angles:**
+      - Essential for ejecting the part from the mold.
+      - Minimum: 0.5° for vertical walls.
+      - Recommended: 1° - 2°.
+      - Texture: Add 1° for every 0.025mm of texture depth.
+      
+      **Ribs and Bosses:**
+      - Rib thickness should be 50-60% of the main wall thickness to avoid sink marks.
+      - Bosses should be attached to walls with ribs or gussets.
+      
+      **Undercuts:**
+      - Avoid if possible. They require expensive side-actions or lifters in the mold.
+    `,
+    blueprintType: 'injection-molding',
+    relatedTopics: ['cnc-dfm', 'sheet-metal-dfm']
+  },
+  {
+    id: 'sheet-metal-dfm',
+    title: 'Sheet Metal DFM',
+    category: 'DFMA',
+    description: 'Design guidelines for sheet metal fabrication (bending, punching, laser cutting).',
+    standardRef: 'Industry Best Practice',
+    content: `
+      **Bend Radius:**
+      - Minimum internal bend radius should be equal to the material thickness (1xT) for ductile materials.
+      - Avoid sharp corners which cause stress concentrations and cracking.
+      
+      **Hole Placement:**
+      - Keep holes away from bends to prevent distortion.
+      - Minimum distance from hole edge to bend line: 2.5x Material Thickness + Bend Radius.
+      
+      **Relief Cuts:**
+      - Essential when bending close to an edge or another bend to prevent tearing.
+      - Width should be at least the material thickness.
+      - Depth should be at least the bend radius + material thickness.
+      
+      **Features:**
+      - **Hems:** Folded edges for safety and strength.
+      - **Lances/Louvers:** Formed features for ventilation or card guides.
+    `,
+    blueprintType: 'sheet-metal',
+    relatedTopics: ['cnc-dfm', 'injection-molding-dfm']
   },
   {
     id: 'stackup-basics',

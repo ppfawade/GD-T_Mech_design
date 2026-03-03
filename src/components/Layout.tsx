@@ -44,10 +44,19 @@ export const Layout: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <main className="flex-1 w-full lg:w-auto pt-16 lg:pt-0 p-4 lg:p-8 overflow-y-auto h-screen">
-        <div className="max-w-5xl mx-auto">
+      <main className="flex-1 w-full lg:w-auto pt-16 lg:pt-0 p-4 lg:p-8 overflow-y-auto h-screen flex flex-col">
+        <div className="max-w-5xl mx-auto w-full flex-grow">
           <Outlet />
         </div>
+        
+        <footer className="max-w-5xl mx-auto w-full mt-12 pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500 pb-8">
+          <div>
+            &copy; 2026 Prashant Fawade. All rights reserved.
+          </div>
+          <div className="mt-2 md:mt-0">
+            Built with <span className="font-medium text-slate-700">Gemini</span> and <span className="font-medium text-slate-700">Vercel</span>
+          </div>
+        </footer>
       </main>
     </div>
   );
